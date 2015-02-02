@@ -69,7 +69,7 @@ define(function (require, exports, module) {
                 if (Cluedo.board.squareAt(p).occupant != null) return;
                 //
                 new ToSquare(this.curTurn, p);
-                if (this.roll == 1) this.endTurn();
+                if (this.roll == 1) return this.endTurn();
                 this.roll--;
 
                 console.log("move to", e.keyCode, "mosse left:", this.roll);
@@ -98,25 +98,40 @@ define(function (require, exports, module) {
             this.curTurn = player;
             if (player.character.inRoom) {
                 // confirm dialog
-                alertify.set({
-                    labels: {
-                        ok: "Stay",
-                        cancel: "Leave"
-                    }
-                });
-                alertify.confirm("Cosa vuoi fare?", function (e) {
-                    if (e) {
-                        // user clicked "Stay"
 
-                        this.suggest();
-                    } else {
-                        // user clicked "Leave"
-                    }
-                }.bind(this));
+                this._stayOrLeave()
+                    .then(this.suggest.bind(this))
+                    .catch(function(){
+
+                    });
 
             } else {
                 this._roll();
             }
+        },
+        _stayOrLeave: function () {
+            return new Promise(function (resolve,reject) {
+
+                setTimeout(function () {
+                    alertify.set({
+                        labels: {
+                            ok: "Stay",
+                            cancel: "Leave"
+                        }
+                    });
+                    alertify.confirm("Cosa vuoi fare?", function (e) {
+                        if (e) {
+                            // user clicked "Stay"
+
+                            resolve();
+
+                        } else {
+                            reject();
+                            // user clicked "Leave"
+                        }
+                    });
+                }, 500);
+            });
         },
         suggest: function () {
             var suggestion = new Suggestion(this.curTurn, this);
@@ -136,18 +151,24 @@ define(function (require, exports, module) {
         setSuspect: function () {
 
             return new Promise(function (resolve, reject) {
-
-                // prompt dialog
-                alertify.prompt("il sospettato è...\n" + Cluedo.suspects.map(function (s) {
-                    return s.name;
-                }), function (e, str) {
-                    // str is the input text
-                    if (e) {
-                        resolve(str);
-                    } else {
-                        // user clicked "cancel"
-                    }
-                });
+                setTimeout(function () {
+                    alertify.set({
+                        labels: {
+                            ok: "Ok",
+                            cancel: "cancel"
+                        }
+                    });
+                    alertify.prompt("il sospettato è...\n" + Cluedo.suspects.map(function (s) {
+                        return s.name;
+                    }), function (e, str) {
+                        // str is the input text
+                        if (e) {
+                            resolve(str);
+                        } else {
+                            // user clicked "cancel"
+                        }
+                    });
+                }, 1000);
             })
         },
         setWeapon: function (suspect) {
@@ -164,8 +185,9 @@ define(function (require, exports, module) {
                             // user clicked "cancel"
                         }
                     });
-                }, 2000);
 
+
+                }, 1000)
             })
         },
         _roll: function () {
@@ -185,7 +207,7 @@ define(function (require, exports, module) {
             this.squares = null;
             this.rooms = null;
             this.roll = 0;
-            Drawer.draw([],[]);
+            Drawer.draw([], []);
             this.nextPlayer();
         },
         end: function () {
