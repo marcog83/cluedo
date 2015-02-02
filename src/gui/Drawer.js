@@ -19,7 +19,7 @@ define(function (require, exports, module) {
             var color;
 
             if (squares != null) {
-                $(".table tr td").removeClass("blueviolet red green yellow cyan");
+                $(".table tr td").attr('class', '');
                 for (var i = 0; i < squares.length; i++) {
                     var sq = squares[i];
                     var x = sq.getCoord().x;
@@ -59,7 +59,7 @@ define(function (require, exports, module) {
                     x = p.x ;
                     y = p.y ;
 
-                    $(".table tr").eq(y).find("td").eq(x).addClass(color);
+                    $(".table tr").eq(y).find("td").eq(x).addClass(s.color);
                 }
             }
             //For if they're inside a room

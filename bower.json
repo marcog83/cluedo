@@ -1,0 +1,6 @@
+{
+  "name": "cluedo",
+  "dependencies": {
+    "lodash": "~3.0.1"
+  }
+}

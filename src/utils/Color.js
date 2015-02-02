@@ -1,11 +1,11 @@
 define(function (require) {
     var Color = {
-        MAGENTA: "MAGENTA",
-        RED: "RED",
-        WHITE: "WHITE",
-        GREEN: "GREEN",
-        BLUE: "BLUE",
-        YELLOW: "YELLOW"
+        MAGENTA: "_MAGENTA",
+        RED: "_RED",
+        WHITE: "_WHITE",
+        GREEN: "_GREEN",
+        BLUE: "_BLUE",
+        YELLOW: "_YELLOW"
     };
 
     return Color

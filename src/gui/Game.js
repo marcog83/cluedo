@@ -37,7 +37,7 @@ define(function (require, exports, module) {
     Game.prototype = {
         handlers: function () {
             document.addEventListener("keyup", function (e) {
-                console.log(e.keyCode);
+
                 var p = this.curTurn.character.location;
                 if (p == null) return;
                 switch (e.keyCode) {
@@ -76,6 +76,7 @@ define(function (require, exports, module) {
                 this.squares = Cluedo.board.nearbySquares(p, null, this.roll);
                 this.rooms = Cluedo.board.nearbyRooms(p, this.roll);
                 Drawer.draw(this.squares, this.rooms, p);
+	            this.selection=p;
             }.bind(this))
         },
         enter: function (room) {
@@ -102,13 +103,25 @@ define(function (require, exports, module) {
                 this._stayOrLeave()
                     .then(this.suggest.bind(this))
                     .catch(function(){
-
-                    });
+		                this._roll();
+		                this.leave();
+	                }.bind(this));
 
             } else {
                 this._roll();
             }
         },
+	    leave: function() {
+			var room = this.curTurn.character.room;
+			//
+
+		    this.curTurn.character.exitRoom(room.exits[0]);
+
+		    this.roll--; //uses one step.
+		    this.squares = Cluedo.board.nearbySquares(this.selection, null, this.roll);
+		    this.rooms = Cluedo.board.nearbyRooms(this.selection, this.roll);
+		    Drawer.draw(this.squares, this.rooms);
+	},
         _stayOrLeave: function () {
             return new Promise(function (resolve,reject) {
 
