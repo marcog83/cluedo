@@ -10,13 +10,17 @@ define(function (require, exports, module) {
 
     Suggestion.prototype = {
         suspectListener: function (name) {
+            this.suspect = Cluedo.suspects.filter(function(s){
+                return s.name.toLowerCase()==name.toLowerCase();
+            })[0];
 
-            for (var s in Cluedo.suspects)
-                if (s.toString().equals(name)) this.suspect = s;
         },
         weaponListener: function (name) {
-            for (var w in Cluedo.weapons)
-                if (w.equals(name)) this.weapon = w;
+            this.weapon = Cluedo.weapons.filter(function(w){
+                return w.name.toLowerCase()==name.toLowerCase();
+            })[0];
+
+
         },
         callInSuspect: function () {
             if (this.suspect.inRoom) this.suspect.exitRoom(null);
@@ -33,7 +37,7 @@ define(function (require, exports, module) {
             var asked = Cluedo.players[index];
             var card;
             console.log("No one could help you. Interesting..");
-            while (!asked.equals(this.player)) {
+            while (asked!=this.player) {
                 card = asked.ask(this.weapon, this.suspect, this.room);
                 if (card != null) {
                     this.player.evidenceSheet.seeCard(card);

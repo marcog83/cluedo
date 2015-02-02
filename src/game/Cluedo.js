@@ -85,7 +85,8 @@ define(function (require, exports, module) {
             this.solution.push(this.weapons[0]);
             this.solution.push(this.suspects[0]);
             this.solution.push(this.rooms[0]);
-            this.weapons = utils.shuffle(this.weapons);
+            Cluedo.solution = this.solution;
+                this.weapons = utils.shuffle(this.weapons);
             this.suspects = utils.shuffle(this.suspects);
             this.rooms = utils.shuffle(this.rooms);
             this.dealHands(this.weapons, this.rooms, this.suspects);
@@ -93,16 +94,16 @@ define(function (require, exports, module) {
 
         dealHands: function (weapons, rooms, suspects) {
             this.deck = [];
-            this.deck = this.deck.concat(Cluedo.suspects.slice(0));
-            this.deck = this.deck.concat(Cluedo.weapons.slice(0));
-            this.deck = this.deck.concat(Cluedo.rooms.slice(0));
+            this.deck = this.deck.concat(suspects.slice(0));
+            this.deck = this.deck.concat(weapons.slice(0));
+            this.deck = this.deck.concat(rooms.slice(0));
             this.solution.forEach(function (card) {
                 var i = this.deck.indexOf(card);
                 this.deck.slice(i, 1);
             }.bind(this));
 
             utils.shuffle(this.deck);
-            this.handSize = this.deck.size() / Cluedo.players.size();
+            this.handSize = this.deck.length / Cluedo.players.length;
             var hand;
             Cluedo.players.forEach(function (p) {
                 hand = [];

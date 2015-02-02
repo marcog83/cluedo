@@ -13,11 +13,14 @@ define(function (require, exports, module) {
     EvidenceSheet.prototype = {
         seeCard: function (card) {
             if (card instanceof Weapon)
-                this.weapons.remove(card);
+            //  this.weapons.remove(card);
+                _.remove(this.weapons, card);
             if (card instanceof Room)
-                this.rooms.remove(card);
+                _.remove(this.rooms, card);
+            // this.rooms.remove(card);
             if (card instanceof Suspect)
-                this.suspects.remove(card);
+                _.remove(this.suspects, card);
+            // this.suspects.remove(card);
         }
     };
     module.exports = EvidenceSheet;

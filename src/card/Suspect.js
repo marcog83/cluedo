@@ -8,12 +8,7 @@ define(function (require, exports, module) {
         this.location = null;
         this.inRoom = null;
     };
-    Suspect.PLUM = new Suspect("Plum", Color.MAGENTA);
-    Suspect.SCARLETT = new Suspect("Scarlett", Color.RED);
-    Suspect.WHITE = new Suspect("White", Color.WHITE);
-    Suspect.GREEN = new Suspect("Green", Color.GREEN);
-    Suspect.PEACOCK = new Suspect("Peacock", Color.BLUE);
-    Suspect.MUSTARD = new Suspect("Mustard", Color.YELLOW);
+
     //
     Suspect.prototype = {
         toString: function () {
@@ -45,6 +40,11 @@ define(function (require, exports, module) {
 
 
     };
-
+    Suspect.PLUM = new Suspect("Plum", Color.MAGENTA);
+    Suspect.SCARLETT = new Suspect("Scarlett", Color.RED);
+    Suspect.WHITE = new Suspect("White", Color.WHITE);
+    Suspect.GREEN = new Suspect("Green", Color.GREEN);
+    Suspect.PEACOCK = new Suspect("Peacock", Color.BLUE);
+    Suspect.MUSTARD = new Suspect("Mustard", Color.YELLOW);
     module.exports = Suspect;
 });

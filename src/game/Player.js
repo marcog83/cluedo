@@ -3,6 +3,7 @@ define(function (require, exports, module) {
     var EvidenceSheet = require("./EvidenceSheet");
     var Cluedo = require("./Cluedo");
     var ToRoom = require("./ToRoom");
+    var ToSquare = require("./ToSquare");
     var Room = require("../card/Room");
     var utils = require("../utils/utils");
 
@@ -32,16 +33,21 @@ define(function (require, exports, module) {
             console.log();
         },
         moveToRoom: function (string) {
-            for (var room in Cluedo.rooms)
-                if (room.toString().equals(string))
-                    new ToRoom(this, room);
+            var room = Cluedo.rooms.filter(function (room) {
+                return room.name == string;
+            })[0];
+            if (room) {
+                new ToRoom(this, room);
+            }
+
+
         },
         ask: function (w, s, r) {
             this.hand = utils.shuffle(this.hand);
-            for (var c in this.hand) {
-                if (c == w || c == s || c == r) return c;
-            }
-            return null;
+            return _.find(this.hand, function (c) {
+                return c == w || c == s || c == r
+            });
+
         },
         moveToSquare: function (point) {
             new ToSquare(this, point);

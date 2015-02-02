@@ -52,8 +52,8 @@ define(function (require, exports, module) {
             var col = point.x;
             var row = point.y;
             //If the square at this position is an entrance to a room, add it to the Set.
-            if (this.house[row][col].entrance() != null)
-                rooms.push(this.house[row][col].entrance().room());
+            if (this.house[row][col].entrance != null)
+                rooms.push(this.house[row][col].entrance.room);
             if (roll > 1) {
                 //Player needs another 1 space to move after reaching the entrance, to enter.
                 var up = new Point(col, row - 1);
@@ -62,13 +62,13 @@ define(function (require, exports, module) {
                 var right = new Point(col + 1, row);
                 //Checks the points are both in the house, and no inside rooms (hence, through walls).
                 if (this.squareAt(up) != null && !this.squareAt(up).isRoom())
-                    rooms = rooms.concat(this.nearbyRooms(up, roll - 1));
+                    rooms = _.union(rooms,this.nearbyRooms(up, roll - 1));
                 if (this.squareAt(down) != null && !this.squareAt(down).isRoom())
-                    rooms = rooms.concat(this.nearbyRooms(down, roll - 1));
+                    rooms = _.union(rooms,this.nearbyRooms(down, roll - 1));
                 if (this.squareAt(left) != null && !this.squareAt(left).isRoom())
-                    rooms = rooms.concat(this.nearbyRooms(left, roll - 1));
+                    rooms = _.union(rooms,this.nearbyRooms(left, roll - 1));
                 if (this.squareAt(right) != null && !this.squareAt(right).isRoom())
-                    rooms = rooms.concat(this.nearbyRooms(right, roll - 1));
+                    rooms = _.union(rooms,this.nearbyRooms(right, roll - 1));
             }
             return rooms;
         },
@@ -78,7 +78,7 @@ define(function (require, exports, module) {
             square.setMoveFrom(from);
             var col = point.x;
             var row = point.y;
-            if (square.occupant() == null) squares.add(square);
+            if (square.occupant == null) squares.push(square);
             if (roll > 0) {
                 var up = new Point(col, row - 1);
                 var down = new Point(col, row + 1);
@@ -86,13 +86,13 @@ define(function (require, exports, module) {
                 var right = new Point(col + 1, row);
                 //Checks the points are both in the house, and no inside rooms (hence, through walls).
                 if (this.squareAt(up) != null && !this.squareAt(up).isRoom())
-                    squares = squares.concat(this.nearbySquares(up, point, roll - 1));
+                    squares = _.union(squares,this.nearbySquares(up, point, roll - 1));
                 if (this.squareAt(down) != null && !this.squareAt(down).isRoom())
-                    squares = squares.concat(this.nearbySquares(down, point, roll - 1));
+                    squares = _.union(squares,this.nearbySquares(down, point, roll - 1));
                 if (this.squareAt(left) != null && !this.squareAt(left).isRoom())
-                    squares = squares.concat(this.nearbySquares(left, point, roll - 1));
+                    squares = _.union(squares,this.nearbySquares(left, point, roll - 1));
                 if (this.squareAt(right) != null && !this.squareAt(right).isRoom())
-                    squares = squares.concat(this.nearbySquares(right, point, roll - 1));
+                    squares = _.union(squares,this.nearbySquares(right, point, roll - 1));
             }
             return squares;
         },
