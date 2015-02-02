@@ -77,5 +77,4 @@ define(function (require) {
 		}
 	};
 	return CNF;
-})
-;
+});
