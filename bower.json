@@ -1,6 +1,11 @@
 {
   "name": "cluedo",
   "dependencies": {
-    "lodash": "~3.0.1"
+    "lodash": "~3.0.1",
+    "dpll": "https://github.com/ofmooseandmen/dpll.git"
+  },
+  "devDependencies": {
+    "requirejs": "~2.1.15",
+    "rjs": "~2.1.15"
   }
 }

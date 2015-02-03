@@ -7,6 +7,7 @@ define(function (require, exports, module) {
         this.start = start;
         this.occupants = [];
         this.exits = [];
+        this.type = 'Room';
     }
 
 

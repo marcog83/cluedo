@@ -2,6 +2,8 @@ define(function (require, exports, module) {
     'use strict';
     var Cluedo = require("../game/Cluedo");
     var Player = require("../game/Player");
+    var HumanController = require("../game/HumanController");
+    var AIPlayer = require("../ai/IAPlayer");
     var Suggestion = require("../game/Suggestion");
     var ToSquare = require("../game/ToSquare");
     var ToRoom = require("../game/ToRoom");
@@ -24,12 +26,13 @@ define(function (require, exports, module) {
         Drawer.init();
         this.cluedo = new Cluedo();
 
-        Cluedo.players.push(new Player(Suspect.PLUM));
-        Cluedo.players.push(new Player(Suspect.SCARLETT));
-        Cluedo.players.push(new Player(Suspect.WHITE));
-        Cluedo.players.push(new Player(Suspect.GREEN));
-        Cluedo.players.push(new Player(Suspect.PEACOCK));
-        Cluedo.players.push(new Player(Suspect.MUSTARD));
+        //Cluedo.players.push(new Player(Suspect.PLUM));
+        Cluedo.players.push(new Player(Suspect.PLUM, new AIPlayer()));
+        Cluedo.players.push(new Player(Suspect.SCARLETT, new HumanController()));
+        /*Cluedo.players.push(new Player(Suspect.WHITE));
+         Cluedo.players.push(new Player(Suspect.GREEN));
+         Cluedo.players.push(new Player(Suspect.PEACOCK));
+         Cluedo.players.push(new Player(Suspect.MUSTARD));*/
         this.cluedo.prepareCards();
         this.takeTurn(Cluedo.players[0])
     }
@@ -76,7 +79,7 @@ define(function (require, exports, module) {
                 this.squares = Cluedo.board.nearbySquares(p, null, this.roll);
                 this.rooms = Cluedo.board.nearbyRooms(p, this.roll);
                 Drawer.draw(this.squares, this.rooms, p);
-	            this.selection=p;
+                this.selection = p;
             }.bind(this))
         },
         enter: function (room) {
@@ -84,115 +87,88 @@ define(function (require, exports, module) {
                 new ToRoom(this.curTurn, room);
                 if (room != Room.POOL) {
 
-                    this.suggest();
+                    this.curTurn.suggest().then(function (suggestion) {
+                        suggestion.callInSuspect();
+                        suggestion.questionPlayers();
+                        this.endTurn();
+                    }.bind(this))
 
                 }
                 else {
-                    new Accusation(this.curTurn);
+                    var accusation = new Accusation(this.curTurn);
+                    this.curTurn.setAccusation()
+                        //.then(this.setWeapon.bind(this))
+                        //.then(this.setRoom.bind(this))
+                        .then(accusation.checkAccusation.bind(accusation))
+                        .then(function (correct) {
+                            if (correct) {
+                                alert(this.curTurn.toString() + " wins! You're right!");
+                                Cluedo.finished = true;
+                            } else {
+                                this.curTurn.eliminate();
+                                this.checkRemainingPlayers();
+                            }
+                        }.bind(this));
                     this.endTurn();
                 }
                 Drawer.draw();
                 return true;
             } else return false;
         },
+        checkRemainingPlayers: function () {
+
+            var remaining = Cluedo.players.filter(function (player) {
+
+                return player.inGame
+            });
+
+            if (remaining.length == 1) {
+                alert("Win by default Only " + remaining[0] + " remains!");
+                Cluedo.finished = true;
+            }
+        },
         takeTurn: function (player) {
             this.curTurn = player;
             if (player.character.inRoom) {
                 // confirm dialog
-
-                this._stayOrLeave()
-                    .then(this.suggest.bind(this))
-                    .catch(function(){
-		                this._roll();
-		                this.leave();
-	                }.bind(this));
+                player.stayOrLeave().then(player.suggest.bind(player))
+                    .then(function (suggestion) {
+                        suggestion.callInSuspect();
+                        suggestion.questionPlayers();
+                        this.endTurn();
+                    }.bind(this))
+                    .catch(function () {
+                        this._roll();
+                        this.leave();
+                    }.bind(this));
 
             } else {
                 this._roll();
             }
         },
-	    leave: function() {
-			var room = this.curTurn.character.room;
-			//
+        leave: function () {
+            var room = this.curTurn.character.room;
+            //
 
-		    this.curTurn.character.exitRoom(room.exits[0]);
+            this.curTurn.character.exitRoom(room.exits[0]);
 
-		    this.roll--; //uses one step.
-		    this.squares = Cluedo.board.nearbySquares(this.selection, null, this.roll);
-		    this.rooms = Cluedo.board.nearbyRooms(this.selection, this.roll);
-		    Drawer.draw(this.squares, this.rooms);
-	},
-        _stayOrLeave: function () {
-            return new Promise(function (resolve,reject) {
-
-                setTimeout(function () {
-                    alertify.set({
-                        labels: {
-                            ok: "Stay",
-                            cancel: "Leave"
-                        }
-                    });
-                    alertify.confirm("Cosa vuoi fare?", function (e) {
-                        if (e) {
-                            // user clicked "Stay"
-
-                            resolve();
-
-                        } else {
-                            reject();
-                            // user clicked "Leave"
-                        }
-                    });
-                }, 500);
-            });
+            this.roll--; //uses one step.
+            this.squares = Cluedo.board.nearbySquares(this.selection, null, this.roll);
+            this.rooms = Cluedo.board.nearbyRooms(this.selection, this.roll);
+            Drawer.draw(this.squares, this.rooms);
         },
-        suggest: function () {
-            var suggestion = new Suggestion(this.curTurn, this);
-            return this.setSuspect()
-                .then(this.setWeapon)
-                .then(function (response) {
-                    var s = response[0];
-                    var w = response[1];
-                    suggestion.suspectListener(s);
-                    suggestion.weaponListener(w);
-                    suggestion.callInSuspect();
-                    suggestion.questionPlayers();
-                    this.endTurn();
-                }.bind(this));
 
-        },
-        setSuspect: function () {
 
+        setRoom: function (partial) {
             return new Promise(function (resolve, reject) {
                 setTimeout(function () {
-                    alertify.set({
-                        labels: {
-                            ok: "Ok",
-                            cancel: "cancel"
-                        }
-                    });
-                    alertify.prompt("il sospettato è...\n" + Cluedo.suspects.map(function (s) {
-                        return s.name;
-                    }), function (e, str) {
+                    alertify.prompt("la stanza è...\n" + Cluedo.rooms.map(function (r) {
+                        return r.name;
+                    }), function (e, room) {
                         // str is the input text
                         if (e) {
-                            resolve(str);
-                        } else {
-                            // user clicked "cancel"
-                        }
-                    });
-                }, 1000);
-            })
-        },
-        setWeapon: function (suspect) {
-            return new Promise(function (resolve, reject) {
-                setTimeout(function () {
-                    alertify.prompt("l' arma è...\n" + Cluedo.weapons.map(function (w) {
-                        return w.name;
-                    }), function (e, weapon) {
-                        // str is the input text
-                        if (e) {
-                            resolve([suspect, weapon]);
+                            partial.push(room);
+                            resolve(partial);
 
                         } else {
                             // user clicked "cancel"

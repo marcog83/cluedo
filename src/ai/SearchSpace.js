@@ -4,51 +4,39 @@
 define(function (require) {
 	"use strict";
 	var Cluedo = require("../game/Cluedo");
-	var Weapon = require("../card/Weapon");
-	var Room = require("../card/Room");
-	var Suspect = require("../card/Suspect");
+
 
 	function SearchSpace() {
-		this.possiblePersons = {};
-		this.possibleWeapons = {};
-		this.possibleRooms = {};
+		this.suspects = Cluedo.suspects.slice(0);
+		this.weapons =  Cluedo.weapons.slice(0);
+		this.rooms =  Cluedo.rooms.slice(0);
 		this.solPerson = null;
 		this.solWeapon = null;
 		this.solRoom = null;
 		//
-		Cluedo.cards.forEach(function (card) {
-			if (card instanceof Weapon) {
-				this.possibleWeapons.push(card);
-			}
-			if (card instanceof Room) {
-				this.possibleRooms.push(card);
-			}
-			if (card instanceof Suspect) {
-				this.possiblePersons.push(card);
-			}
-		});
+		 
 	}
 
 	SearchSpace.prototype = {
 		excludeCard: function (card) {
-			if (card instanceof Weapon) {
-				_.remove(this.possibleWeapons, card);
-				this.solWeapon = _.last(this.possibleWeapons);
+			if (card.type=='Weapon') {
+				_.remove(this.weapons, card);
+				this.solWeapon = _.last(this.weapons);
 			}
-			if (card instanceof Room) {
-				_.remove(this.possibleRooms, card);
-				this.solRoom = _.last(this.possibleRooms);
+			if (card.type=='Room') {
+				_.remove(this.rooms, card);
+				this.solRoom = _.last(this.rooms);
 			}
-			if (card instanceof Suspect) {
-				_.remove(this.possiblePersons, card);
-				this.solPerson = _.last(this.possiblePersons);
+			if (card.type=='Suspect') {
+				_.remove(this.suspects, card);
+				this.solPerson = _.last(this.suspects);
 			}
 		},
 		update: function (card) {
 			this.excludeCard(card);
 		},
 		getPossibleCards: function () {
-			return this.possiblePersons.concat(this.possibleWeapons, this.possibleRooms);
+			return this.suspects.concat(this.weapons, this.rooms);
 		},
 		getSolutionPerson: function () {
 			return this.solPerson;

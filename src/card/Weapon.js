@@ -2,12 +2,14 @@ define(function (require, exports, module) {
     'use strict';
     function Weapon(name) {
         this.name = name;
+        this.type = "Weapon";
     }
 
     Weapon.prototype = {
         toString: function () {
             return this.name;
-        }
+        },
+
     };
 
     Weapon.ROPE = new Weapon("Rope");

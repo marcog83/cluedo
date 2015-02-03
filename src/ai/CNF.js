@@ -23,7 +23,7 @@ define(function (require) {
 					c.literals.forEach(function (l) {
 						if (l.value == value) {
 							clauseOK = false;
-							break;
+							//break;
 						}
 						if (clauseOK) {
 							newList.push(c);

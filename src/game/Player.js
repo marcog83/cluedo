@@ -1,61 +1,33 @@
 define(function (require, exports, module) {
 	'use strict';
-	var EvidenceSheet = require("./EvidenceSheet");
 	var Cluedo = require("./Cluedo");
-	var ToRoom = require("./ToRoom");
-	var ToSquare = require("./ToSquare");
-	var Room = require("../card/Room");
-	var utils = require("../utils/utils");
 
-	function Player(character) {
+
+
+	function Player(character,controller) {
 		this.character = character;
+		this.controller = controller;
 		this.inGame = true;
 	}
 
 	Player.prototype = {
 		setHand: function (hand) {
-			this.hand = hand;
-			this.evidenceSheet = new EvidenceSheet();
-			this.hand.forEach(function (card) {
-				this.evidenceSheet.seeCard(card);
-			}.bind(this));
+			this.controller.setHand(hand);
 		},
-		reviewEvidenceSheet: function () {
-			this.evidenceSheet.suspects.forEach(function (s) {
-				console.log("The murderer could have been " + s);
-			});
-			this.evidenceSheet.weapons.forEach(function (w) {
-				console.log("The murder weapon could have been the " + w);
-			});
-			this.evidenceSheet.rooms.forEach(function (r) {
-				if (r != Room.POOL) {
-					console.log("The location could have been the " + r);
-				}
-			});
-			console.log("Your hand: ");
-			this.hand.forEach(function (card) {
-				console.log(c.toString() + ". ");
-			}.bind(this));
+		stayOrLeave:function(){
+			return this.controller.stayOrLeave();
 		},
-		moveToRoom: function (string) {
-			var room = Cluedo.rooms.filter(function (room) {
-				return room.name == string;
-			})[0];
-			if (room) {
-				new ToRoom(this, room);
-			}
+		suggest:function(){
+			return this.controller.suggest(this);
 		},
-		ask: function (w, s, r) {
-			this.hand = utils.shuffle(this.hand);
-			return _.find(this.hand, function (c) {
-				return c == w || c == s || c == r
-			});
-		},
-		moveToSquare: function (point) {
-			new ToSquare(this, point);
+		ask: function (questionair, suggestion) {
+			return this.controller.ask(questionair, suggestion);
 		},
 		eliminate: function () {
 			this.inGame = false;
+		},
+		seeCard:function(suggestion,card,asked,couldNotAnswer){
+			return this.controller.seeCard(suggestion,card,asked,couldNotAnswer);
 		},
 		toString: function () {
 			return "Player " + (Cluedo.players.indexOf(this) + 1);

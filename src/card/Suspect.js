@@ -7,6 +7,7 @@ define(function (require, exports, module) {
         this.color = color;
         this.location = null;
         this.inRoom = null;
+        this.type = 'Suspect';
     };
 
     //

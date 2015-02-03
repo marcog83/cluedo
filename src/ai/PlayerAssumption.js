@@ -9,7 +9,7 @@ define(function (require) {
 
 	function PlayerAssumption(player) {
 		this.player = player;
-		this.possibleHandCards = {};
+		this.possibleHandCards = [];
 		this.certainHandCards = Cluedo.cards.slice(0);
 		this.kb = new CNF();
 	}
