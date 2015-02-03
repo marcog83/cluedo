@@ -6,11 +6,15 @@ define(function (require) {
 	var Cluedo = require("../game/Cluedo");
 	var CNF = require("./CNF");
 	var Literal = require("./Literal");
+	var Signal = require("signals");
+	var Room = require("../card/Room");
 
 	function PlayerAssumption(player) {
 		this.player = player;
-		this.possibleHandCards = [];
-		this.certainHandCards = Cluedo.cards.slice(0);
+		this.onCertainAdded = new Signal();
+		this.possibleHandCards = Cluedo.cards.slice(0);
+		_.remove(this.possibleHandCards, Room.POOL);
+		this.certainHandCards = [];
 		this.kb = new CNF();
 	}
 
@@ -25,7 +29,6 @@ define(function (require) {
 				// Notify about more cards than necessary, but otherwise we have
 				// conflicts with the removal mechanism in addCertainHandCard()
 				this.certainHandCards.forEach(function (certainCard) {
-					this.setChanged();
 					this.notifyObservers(certainCard);
 				}.bind(this));
 			}
@@ -48,7 +51,6 @@ define(function (require) {
 			}
 			this.certainHandCards.push(card);
 			_.remove(this.possibleHandCards, card);
-			this.setChanged();
 			this.notifyObservers(card);
 			if (this.certainHandCards.length == this.player.hand.length) {
 				this.possibleHandCards = [];
@@ -71,7 +73,7 @@ define(function (require) {
 			//this.onChanged.dispatch();
 		},
 		notifyObservers: function (card) {
-			//this.notifyObservers.dispatch();
+			this.onCertainAdded.emit(card);
 		}
 	};
 	return PlayerAssumption;

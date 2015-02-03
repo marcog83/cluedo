@@ -2,7 +2,8 @@
   "name": "cluedo",
   "dependencies": {
     "lodash": "~3.0.1",
-    "dpll": "https://github.com/ofmooseandmen/dpll.git"
+    "dpll": "https://github.com/ofmooseandmen/dpll.git",
+    "js-signal-slot": "https://github.com/marcog83/js-signal-slot.git"
   },
   "devDependencies": {
     "requirejs": "~2.1.15",

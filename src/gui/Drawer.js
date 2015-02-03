@@ -52,7 +52,7 @@ define(function (require, exports, module) {
 
         },
         drawSuspects:function(){
-            var color='blueviolet';
+
             var p;
             var x, y;
             for(var i=0; i< Cluedo.suspects.length;i++){

@@ -8,6 +8,7 @@ define(function (require, exports, module) {
 		this.character = character;
 		this.controller = controller;
 		this.inGame = true;
+
 	}
 
 	Player.prototype = {
@@ -15,7 +16,7 @@ define(function (require, exports, module) {
 			this.controller.setHand(hand);
 		},
 		stayOrLeave:function(){
-			return this.controller.stayOrLeave();
+			return this.controller.stayOrLeave(this);
 		},
 		suggest:function(){
 			return this.controller.suggest(this);
@@ -27,10 +28,16 @@ define(function (require, exports, module) {
 			this.inGame = false;
 		},
 		seeCard:function(suggestion,card,asked,couldNotAnswer){
-			return this.controller.seeCard(suggestion,card,asked,couldNotAnswer);
+			return this.controller.seeCard(suggestion,card,asked,couldNotAnswer,this);
 		},
 		toString: function () {
 			return "Player " + (Cluedo.players.indexOf(this) + 1);
+		},
+		get hand(){
+			return this.controller.hand;
+		},
+		setAccusation:function(){
+			return this.controller.setAccusation();
 		}
 	};
 	module.exports = Player;

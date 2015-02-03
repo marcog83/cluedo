@@ -4,6 +4,8 @@ define(function (require, exports, module) {
 
 	function Suggestion(player) {
 		this.room = player.character.room;
+		this.suspect = player;
+		this.weapon = player;
 		this.player = player;
 	}
 
@@ -34,15 +36,15 @@ define(function (require, exports, module) {
 			}
 			var asked = Cluedo.players[index];
 			var card;
-			var message = "No one could help you. Interesting.."
-			var couldNotAnswer=[];
+			var message = "No one could help you. Interesting..";
+			var couldNotAnswer = [];
 			while (asked != this.player) {
-				card = asked.ask(this.player,this);
+				card = asked.ask(this.player, this);
 				if (card) {
-					this.player.seeCard(this,card,asked,couldNotAnswer);
-					message = "Shown " + card.toString();
+					this.player.seeCard(this, card, asked, couldNotAnswer);
+					message = asked.toString() + " showed you =>" + card.toString();
 					break;
-				}else{
+				} else {
 					couldNotAnswer.push(asked);
 				}
 				//Increments count, resets if exceeding player count.
@@ -52,6 +54,7 @@ define(function (require, exports, module) {
 				asked = Cluedo.players[index];
 			}
 			console.log(message);
+			return card
 		}
 	};
 	module.exports = Suggestion;

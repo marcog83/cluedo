@@ -6,6 +6,13 @@ define(function (require) {
 	function Literal(value,sign){
 		this.value=value;
 		this.sign=sign;
+		this.toString=function(){
+			var s = "";
+			if (!sign) {
+				s += "!";
+			}
+			return s + value.toString();
+		}
 	}
 	return Literal;
 });
