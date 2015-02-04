@@ -24,7 +24,7 @@ define(function (require) {
     }
 
     SearchSpace.prototype = {
-        excludeCard: function (card) {
+        excludeCard: function (card,emit) {
 
             if (card.type == 'Weapon') {
                 _.remove(this.weapons, card);
@@ -38,11 +38,12 @@ define(function (require) {
                 _.remove(this.suspects, card);
                 this.solPerson = _.last(this.suspects);
             }
+            if(!emit)
             this.onChanged.emit(card);
 
         },
         update: function (card) {
-            this.excludeCard(card);
+            this.excludeCard(card,true);
         },
         getPossibleCards: function () {
             return this.suspects.concat(this.weapons, this.rooms);

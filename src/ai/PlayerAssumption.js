@@ -21,17 +21,18 @@ define(function (require) {
     }
 
     PlayerAssumption.prototype = {
-        removePossibleCard: function (card) {
+        removePossibleCard: function (card, emit) {
             this.possibleHandCards = this.possibleHandCards.filter(function (pc) {
                 return pc != card;
             });
             if (this.certainHandCards.length + this.possibleHandCards.length == this.player.hand.length) {
-                this.certainHandCards = _.union(this.certainHandCards, this.possibleHandCards);
+                this.certainHandCards = this.certainHandCards.concat(this.possibleHandCards);
+                //this.certainHandCards = _.union(this.certainHandCards, this.possibleHandCards);
                 this.possibleHandCards = [];
                 // Notify about more cards than necessary, but otherwise we have
                 // conflicts with the removal mechanism in addCertainHandCard()
                 this.certainHandCards.forEach(function (certainCard) {
-                    this.notifyObservers(certainCard);
+                    this.notifyObservers(certainCard, emit);
                 }.bind(this));
             }
             this.kb.addNewFact(card, false);
@@ -49,9 +50,9 @@ define(function (require) {
         },
         addCertainHandCard: function (card) {
             /*if (!_.contains(this.possibleHandCards,card) || _.contains(this.certainHandCards,card)) {
-                return; // Already added / not possible
-            }*/
-            this.certainHandCards= _.union(this.certainHandCards,[card]);
+             return; // Already added / not possible
+             }*/
+            this.certainHandCards = _.union(this.certainHandCards, [card]);
             //this.certainHandCards.push(card);
 
             _.remove(this.possibleHandCards, card);
@@ -68,7 +69,7 @@ define(function (require) {
          *
          */
         update: function (card) {
-            this.removePossibleCard(card);
+            this.removePossibleCard(card, true);
         },
         isFullyExplored: function () {
             return !this.possibleHandCards.length;
@@ -76,8 +77,9 @@ define(function (require) {
         setChanged: function () {
             //this.onChanged.dispatch();
         },
-        notifyObservers: function (card) {
-            this.onCertainAdded.emit(card);
+        notifyObservers: function (card, emit) {
+            if (!emit)
+                this.onCertainAdded.emit(card);
         },
         addAnsweredSuggestion: function (suggestion) {
             var cards = [suggestion.suspect, suggestion.room, suggestion.weapon];

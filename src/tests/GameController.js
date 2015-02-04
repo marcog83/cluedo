@@ -3,14 +3,14 @@
  */
 define(function (require) {
 	"use strict";
-	var Cluedo = require("../game/Cluedo");
+	var Room = require("../card/Room");
 
 	function GameController(game) {
 		$("#entra-stanza").click(function (e) {
 			e.preventDefault();
-			var index = parseInt($("#room").val());
-			var room = Cluedo.rooms[index];
-			game.enter(room);
+
+
+			game.enter(Room.HALL);
 		});
 	}
 

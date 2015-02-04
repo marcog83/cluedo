@@ -12,10 +12,10 @@ define(function (require) {
 			//
 			game.start();
 			game.onWin.connect(function (player) {
-				alert("You Win! " + player.toString());
+				alertify.alert("You Win! " + player.toString());
 			});
 			game.onFailed.connect(function (player) {
-				alert("You Failed! " + player.toString());
+				alertify.alert("You Failed! " + player.toString());
 			});
 		}
 	};

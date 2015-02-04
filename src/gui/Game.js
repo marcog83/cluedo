@@ -24,16 +24,15 @@ define(function (require, exports, module) {
         this.onRoll = new Signal();
         this.onPlayerMoved = new Signal();
         this.cluedo = new Cluedo();
-        //Cluedo.players.push(new Player(Suspect.PLUM));
+
         Cluedo.players.push(new Player(Suspect.PLUM, new AIPlayer()));
         Cluedo.players.push(new Player(Suspect.SCARLETT, new AIPlayer()));
         Cluedo.players.push(new Player(Suspect.WHITE, new AIPlayer()));
         Cluedo.players.push(new Player(Suspect.GREEN, new AIPlayer()));
+        Cluedo.players.push(new Player(Suspect.PEACOCK, new AIPlayer()));
+        Cluedo.players.push(new Player(Suspect.MUSTARD, new AIPlayer()));
 
-        /*Cluedo.players.push(new Player(Suspect.WHITE));
-         Cluedo.players.push(new Player(Suspect.GREEN));
-         Cluedo.players.push(new Player(Suspect.PEACOCK));
-         Cluedo.players.push(new Player(Suspect.MUSTARD));*/
+
 
         MAX_TURN = 20*Cluedo.players.length;
     }
@@ -169,8 +168,7 @@ define(function (require, exports, module) {
             this.onRoll.emit(point, this.roll);
         },
         endTurn: function () {
-            this.squares = null;
-            this.rooms = null;
+
             this.roll = 0;
             this.onTurnCompleted.emit(this.curTurn);
 
