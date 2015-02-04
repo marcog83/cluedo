@@ -93,7 +93,7 @@ define(function (require, exports, module) {
 			utils.shuffle(deck);
 			var handSize = Math.round(deck.length / Cluedo.players.length);
 			Cluedo.players.forEach(function (player, i, array) {
-				var to = (i * handSize + handSize) > deck.length ? deck.length : handSize;
+				var to = (i * handSize + handSize) > deck.length ? deck.length : (i * handSize + handSize);
 				var hand = deck.slice(i * handSize, to);
 				player.setHand(hand);
 			}.bind(this))

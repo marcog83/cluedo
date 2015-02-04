@@ -11,16 +11,11 @@ define(function (require, exports, module) {
 
 
         checkAccusation: function (accusation) {
-
-            if (_.intersection(Cluedo.solution.map(function (card) {
-                    return card.name;
-                }), accusation).length == 3) {
-
-                return true;
-            } else {
-
-                return false;
-            }
+            var correct = accusation.filter(function (card) {
+                    return _.contains(Cluedo.solution, card);
+                }).length == 3;
+            console.log("Let me see!!! It's", correct);
+            return correct;
         }
     };
     module.exports = Accusation;

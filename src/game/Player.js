@@ -7,6 +7,7 @@ define(function (require, exports, module) {
 	function Player(character,controller) {
 		this.character = character;
 		this.controller = controller;
+		this.controller.cPlayer=this;
 		this.inGame = true;
 
 	}
@@ -29,6 +30,9 @@ define(function (require, exports, module) {
 		},
 		seeCard:function(suggestion,card,asked,couldNotAnswer){
 			return this.controller.seeCard(suggestion,card,asked,couldNotAnswer,this);
+		},
+		observeMove:function(suggestion, questionair, answerer, couldNotAnswer){
+			return this.controller.observeMove(suggestion, questionair, answerer, couldNotAnswer);
 		},
 		toString: function () {
 			return "Player " + (Cluedo.players.indexOf(this) + 1);
