@@ -27,7 +27,7 @@ define(function (require, exports, module) {
 
 
         enterRoom: function (room) {
-            room.addOccupant(this);
+           // room.addOccupant(this);
             this.inRoom = true;
             this.room = room;
         },

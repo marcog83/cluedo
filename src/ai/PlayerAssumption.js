@@ -21,8 +21,11 @@ define(function (require) {
 
 	PlayerAssumption.prototype = {
 		removePossibleCard: function (card, emit) {
-			this.possibleHandCards = this.possibleHandCards ^ card;
+			//elimina la card
+			this.possibleHandCards ^= card;
+			//
 			var sum = this.possibleHandCards | this.certainHandCards;
+			cosnole.log("sum:",sum);
 			if ((sum & this.player.hand) == this.player.hand) {
 				this.certainHandCards = sum;
 				this.possibleHandCards = 0;
@@ -44,8 +47,8 @@ define(function (require) {
 			}
 		},
 		addCertainHandCard: function (card) {
-			this.certainHandCards = this.certainHandCards | card;
-			this.possibleHandCards = this.possibleHandCards ^ card;
+			this.certainHandCards |= card;
+			this.possibleHandCards ^= card;
 			this.notifyObservers(card);
 			if (this.player.inHand(this.certainHandCards)) {
 				this.possibleHandCards = 0;
@@ -72,17 +75,12 @@ define(function (require) {
 		addAnsweredSuggestion: function (suggestion) {
 			var clause = new Clause();
 			var cards = suggestion.suspect | suggestion.room | suggestion.weapon;
-			console.log("binary cards",  utils.numToBinaryArray(cards));
-
-
-			cards = cards ^ this.certainHandCards;
-			console.log("binary certa",  utils.numToBinaryArray(this.certainHandCards));
-			console.log("binary  dopo", utils.numToBinaryArray(cards));
-			cards = cards ^ this.possibleHandCards;
-			console.log("binary possi",  utils.numToBinaryArray(this.possibleHandCards));
-			console.log("binary  dopo", utils.numToBinaryArray(cards));
+			console.log(" cards", utils.numToBinaryArray(cards));
+			console.log("     c", utils.numToBinaryArray(this.certainHandCards));
+			console.log("    ~c", utils.numToBinaryArray(cards ^ this.certainHandCards));
+			//cards = cards ^ this.certainHandCards;
+			//cards = cards ^ this.possibleHandCards;
 			var binary = utils.numToBinaryArray(cards);
-
 			binary.forEach(function (value, left) {
 				if (value != 0) {
 					value = 1 << left;
@@ -90,15 +88,15 @@ define(function (require) {
 				}
 			});
 			/*_.chain(cards)
-				.filter(cards, function (card) {
-					return _.contains(this.certainHandCards, card);
-				}.bind(this))
-				.filter(function (card) {
-					return _.contains(this.possibleHandCards, card);
-				}.bind(this))
-				.forEach(function (card) {
-					clause.addLiteral(card, true);
-				});*/
+			 .filter(cards, function (card) {
+			 return _.contains(this.certainHandCards, card);
+			 }.bind(this))
+			 .filter(function (card) {
+			 return _.contains(this.possibleHandCards, card);
+			 }.bind(this))
+			 .forEach(function (card) {
+			 clause.addLiteral(card, true);
+			 });*/
 			if (clause.literals.length == 1) { // New certain hand card
 				this.addCertainHandCard(clause.literals[0].value);
 			} else if (!clause.isEmpty()) { // New clause
