@@ -23,16 +23,17 @@ define(function (require) {
 		removePossibleCard: function (card, emit) {
 			//elimina la card
 			this.possibleHandCards ^= card;
-			//
-			var sum = this.possibleHandCards | this.certainHandCards;
-			cosnole.log("sum:",sum);
-			if ((sum & this.player.hand) == this.player.hand) {
-				this.certainHandCards = sum;
-				this.possibleHandCards = 0;
-				// Notify about more cards than necessary, but otherwise we have
-				// conflicts with the removal mechanism in addCertainHandCard()
-				this.notifyObservers(this.certainHandCards, emit);
-			}
+			////
+			//var sum = this.possibleHandCards | this.certainHandCards;
+			//console.log("sum:",utils.numToBinaryArray(sum));
+			//if ((sum & this.player.hand) == this.player.hand) {
+			//	this.certainHandCards = sum;
+			//	this.possibleHandCards = 0;
+			//	this.kb.clear();
+			//	// Notify about more cards than necessary, but otherwise we have
+			//	// conflicts with the removal mechanism in addCertainHandCard()
+			//	this.notifyObservers(this.certainHandCards, emit);
+			//}
 			this.kb.addNewFact(card, false);
 			var facts = this.kb.getNewFacts();
 			var alreadyAddedFacts = [];
@@ -50,7 +51,7 @@ define(function (require) {
 			this.certainHandCards |= card;
 			this.possibleHandCards ^= card;
 			this.notifyObservers(card);
-			if (this.player.inHand(this.certainHandCards)) {
+			if (this.player.hand & this.certainHandCards) {
 				this.possibleHandCards = 0;
 			}
 			// remove all clauses with card = true

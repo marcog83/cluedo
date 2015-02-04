@@ -74,7 +74,7 @@ define(function (require) {
 			});
 		},
 		inHand: function (card) {
-			return (this.hand & card) == card;
+			return (this.hand & card);
 		},
 		ask: function (questionair, suggestion) {
 			this.shownCards[questionair] = this.shownCards[questionair] || {};
