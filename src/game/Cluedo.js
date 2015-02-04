@@ -7,6 +7,7 @@ define(function (require, exports, module) {
 	var Suspect = require("../card/Suspect");
 	var Point = require("../utils/Point");
 	var utils = require("../utils/utils");
+	var Cards = require("../bitwise/utils");
 
 	function Cluedo() {
 		this.dice = new Dice();
@@ -26,7 +27,8 @@ define(function (require, exports, module) {
 	Cluedo.prototype = {
 		initWeapons: function () {
 			Cluedo.weapons = [];
-			Cluedo.weapons.push(Weapon.ROPE);
+
+			/*Cluedo.weapons.push(Weapon.ROPE);
 			Cluedo.weapons.push(Weapon.CANDLESTICK);
 			Cluedo.weapons.push(Weapon.KNIFE);
 			Cluedo.weapons.push(Weapon.PISTOL);
@@ -34,11 +36,12 @@ define(function (require, exports, module) {
 			Cluedo.weapons.push(Weapon.DUMBBELL);
 			Cluedo.weapons.push(Weapon.POISON);
 			Cluedo.weapons.push(Weapon.TROPHY);
-			Cluedo.weapons.push(Weapon.AXE);
+			Cluedo.weapons.push(Weapon.AXE);*/
 		},
 		initSuspects: function () {
 			Cluedo.suspects = [];
-			Cluedo.suspects.push(Suspect.PLUM);
+
+			/*Cluedo.suspects.push(Suspect.PLUM);
 			Suspect.PLUM.setLocation(new Point(20, 0));
 			Cluedo.suspects.push(Suspect.SCARLETT);
 			Suspect.SCARLETT.setLocation(new Point(18, 28));
@@ -49,11 +52,11 @@ define(function (require, exports, module) {
 			Cluedo.suspects.push(Suspect.PEACOCK);
 			Suspect.PEACOCK.setLocation(new Point(6, 0));
 			Cluedo.suspects.push(Suspect.MUSTARD);
-			Suspect.MUSTARD.setLocation(new Point(7, 28));
+			Suspect.MUSTARD.setLocation(new Point(7, 28));*/
 		},
 		initRooms: function () {
 			Cluedo.rooms = [];
-			Cluedo.rooms.push(Room.SPA);
+			/*Cluedo.rooms.push(Room.SPA);
 			Cluedo.rooms.push(Room.THEATRE);
 			Cluedo.rooms.push(Room.LIVING);
 			Cluedo.rooms.push(Room.OBSERVATORY);
@@ -62,7 +65,7 @@ define(function (require, exports, module) {
 			Cluedo.rooms.push(Room.HALL);
 			Cluedo.rooms.push(Room.KITCHEN);
 			Cluedo.rooms.push(Room.DINING);
-			Cluedo.rooms.push(Room.GUEST);
+			Cluedo.rooms.push(Room.GUEST);*/
 		},
 		newGame: function () {
 			Cluedo.players = [];
@@ -73,7 +76,7 @@ define(function (require, exports, module) {
 			var weapons = utils.shuffle(Cluedo.weapons.slice(0));
 			var suspects = utils.shuffle(Cluedo.suspects.slice(0));
 			var rooms = utils.shuffle(Cluedo.rooms.slice(0));
-			_.remove(rooms, Room.POOL)
+			_.remove(rooms, Room.POOL);
 			var solution = [];
 			solution.push(weapons[0]);
 			solution.push(suspects[0]);
