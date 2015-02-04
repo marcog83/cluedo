@@ -85,11 +85,14 @@ define(function (require) {
         addAnsweredSuggestion: function (suggestion) {
             var cards = [suggestion.suspect, suggestion.room, suggestion.weapon];
             var clause = new Clause();
+            console.log(" cards",cards);
+            console.log(" certa",this.certainHandCards);
             _.chain(cards)
                 .filter(cards, function (card) {
                     return _.contains(this.certainHandCards, card);
                 }.bind(this))
-                .filter(function (card) {
+                .filter(function (card,i,array) {
+                    console.log("~certa",array);
                     return _.contains(this.possibleHandCards, card);
                 }.bind(this))
                 .forEach(function (card) {
