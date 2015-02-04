@@ -80,20 +80,23 @@ define(function (require) {
 
             cards = utils.contains(cards, this.certainHandCards);
             cards = utils.contains(cards, this.possibleHandCards);
-            var binary = utils.numToBinaryArray(cards);
-            console.log("binary",binary);
-            binary.forEach(function (value, left) {
-                if (value != 0) {
-                    value = 1 << left;
-                    clause.addLiteral(value, true);
-                }
-            });
+            if (cards) {
+                var binary = utils.numToBinaryArray(cards);
 
-            if (clause.literals.length == 1) { // New certain hand card
-                this.addCertainHandCard(clause.literals[0].value);
-            } else if (!clause.isEmpty()) { // New clause
-                this.kb.addClause(clause);
+                binary.forEach(function (value, index) {
+                    if (value != 0) {
+                        value = 1 << (binary.length-1-index);
+                        clause.addLiteral(value, true);
+                    }
+                });
+
+                if (clause.literals.length == 1) { // New certain hand card
+                    this.addCertainHandCard(clause.literals[0].value);
+                } else if (!clause.isEmpty()) { // New clause
+                    this.kb.addClause(clause);
+                }
             }
+
         }
     };
     return PlayerAssumption;

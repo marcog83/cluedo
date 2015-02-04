@@ -69,7 +69,7 @@ define(function (require, exports, module) {
                 //
                 message = response.answerer.toString() + " can help you! => " + response.card;
             }else{
-                console.log("hand =>"+this.player.hand);
+                 console.log("wow!")
             }
             console.log(message);
 

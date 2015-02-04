@@ -12,7 +12,7 @@ define(function (require, exports, module) {
     var Suspect = require("../card/Suspect");
     var Point = require("../utils/Point");
     var Signal = require("signals");
-    var MAX_TURN = 20*3;
+    var MAX_TURN = 20 * 3;
     var current = 0;
 
     function Game() {
@@ -33,8 +33,7 @@ define(function (require, exports, module) {
         Cluedo.players.push(new Player(Suspect.MUSTARD, new AIPlayer()));
 
 
-
-        MAX_TURN = 20*Cluedo.players.length;
+        MAX_TURN = 20 * Cluedo.players.length;
     }
 
     Game.prototype = {
@@ -112,7 +111,7 @@ define(function (require, exports, module) {
             }
         },
         takeTurn: function (player) {
-            console.log(parseInt(current/Cluedo.players.length),"-------------------- " + player.toString() + " --------------------------------");
+            console.log(parseInt(current / Cluedo.players.length), "-------------------- " + player.toString() + " --------------------------------");
             this.curTurn = player;
             if (player.character.inRoom) {
                 // confirm dialog
@@ -137,27 +136,11 @@ define(function (require, exports, module) {
         leave: function () {
             var room = this.curTurn.character.room;
             //
-            this.curTurn.character.exitRoom(room.exits[0]);
+            // this.curTurn.character.exitRoom(room.exits[0]);
             this.roll--; //uses one step.
             this.onLeave.emit(this.selection, this.roll);
         },
-        //setRoom: function (partial) {
-        //	return new Promise(function (resolve, reject) {
-        //		setTimeout(function () {
-        //			alertify.prompt("la stanza è...\n" + Cluedo.rooms.map(function (r) {
-        //				return r.name;
-        //			}), function (e, room) {
-        //				// str is the input text
-        //				if (e) {
-        //					partial.push(room);
-        //					resolve(partial);
-        //				} else {
-        //					// user clicked "cancel"
-        //				}
-        //			});
-        //		}, 1000)
-        //	})
-        //},
+
         _roll: function () {
             this.roll = this.cluedo.dice.roll();
             var point = this.curTurn.character.location;

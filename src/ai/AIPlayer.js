@@ -32,24 +32,19 @@ define(function (require) {
 			otherPlayers.forEach(function (player) {
 				this.assumptions.push(new PlayerAssumption(player));
 				var tmpHM = {};
-				binary.forEach(function (value, left) {
+				binary.forEach(function (value, index) {
 					if (value === 1) {
-						value = 1 << left;
+						value = 1 << (binary.length-1-index);
 						tmpHM[value] = false;
 					}
 				});
 				this.shownCards[player] = tmpHM;
 			}.bind(this));
-			/*for (var i = 0; i < numPlayer; i ++) {
-			 this.assumptions.push(new PlayerAssumption(otherPlayers[i]));
 
-
-			 }*/
-			//
-			binary.forEach(function (value, left) {
+			binary.forEach(function (value, index) {
 				var card;
 				if (value === 1) {
-					card = 1 << left;
+					card = 1 << (binary.length-1-index);
 					this.searchSpace.update(card);
 					this.assumptions.forEach(function (assumption) {
 						assumption.update(card);
@@ -74,7 +69,7 @@ define(function (require) {
 			});
 		},
 		inHand: function (card) {
-			return (this.hand & card);
+			return (this.hand & card)==card;
 		},
 		ask: function (questionair, suggestion) {
 			this.shownCards[questionair] = this.shownCards[questionair] || {};
