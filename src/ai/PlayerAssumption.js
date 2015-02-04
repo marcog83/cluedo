@@ -29,6 +29,7 @@ define(function (require) {
                 this.certainHandCards = this.certainHandCards.concat(this.possibleHandCards);
                 //this.certainHandCards = _.union(this.certainHandCards, this.possibleHandCards);
                 this.possibleHandCards = [];
+				this.kb.clear();
                 // Notify about more cards than necessary, but otherwise we have
                 // conflicts with the removal mechanism in addCertainHandCard()
                 this.certainHandCards.forEach(function (certainCard) {
