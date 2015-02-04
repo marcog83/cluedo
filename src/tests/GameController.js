@@ -8,9 +8,7 @@ define(function (require) {
 	function GameController(game) {
 		$("#entra-stanza").click(function (e) {
 			e.preventDefault();
-
-
-			game.enter(Room.HALL);
+ 			game.enter(Room.HALL);
 		});
 	}
 

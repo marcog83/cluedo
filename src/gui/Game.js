@@ -3,7 +3,7 @@ define(function (require, exports, module) {
     var Cluedo = require("../game/Cluedo");
     var Player = require("../game/Player");
     var HumanController = require("../game/HumanController");
-    var AIPlayer = require("../ai/IAPlayer");
+    var AIPlayer = require("../ai/AIPlayer");
     var Suggestion = require("../game/Suggestion");
     var ToSquare = require("../game/ToSquare");
     var ToRoom = require("../game/ToRoom");
