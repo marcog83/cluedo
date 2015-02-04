@@ -24,17 +24,17 @@ define(function (require) {
             //elimina la card
             this.possibleHandCards &= ~card;
             ////
-            var sum = this.possibleHandCards | this.certainHandCards;
+            /* var sum = this.possibleHandCards | this.certainHandCards;
 
-            if (sum & this.player.hand) {
-                this.certainHandCards =this.possibleHandCards;
-                this.possibleHandCards = 0;
-                this.kb.clear();
-                // Notify about more cards than necessary, but otherwise we have
-                // conflicts with the removal mechanism in addCertainHandCard()
-                this.notifyObservers(this.certainHandCards, emit);
-                return
-            }
+             if (sum == this.player.hand) {
+             this.certainHandCards =this.possibleHandCards;
+             this.possibleHandCards = 0;
+             this.kb.clear();
+             // Notify about more cards than necessary, but otherwise we have
+             // conflicts with the removal mechanism in addCertainHandCard()
+             this.notifyObservers(this.certainHandCards, emit);
+             return
+             }*/
             this.kb.addNewFact(card, false);
             var facts = this.kb.getNewFacts();
             var alreadyAddedFacts = [];
@@ -77,30 +77,18 @@ define(function (require) {
         addAnsweredSuggestion: function (suggestion) {
             var clause = new Clause();
             var cards = suggestion.suspect | suggestion.room | suggestion.weapon;
-            console.log(" cards", utils.numToBinaryArray(cards));
-            console.log("     c", utils.numToBinaryArray(this.certainHandCards));
 
-            console.log("    ~c", utils.numToBinaryArray(utils.contains(cards,this.certainHandCards)));
-
-            cards=utils.contains(cards,this.certainHandCards);
-            cards=utils.contains(cards,this.possibleHandCards);
+            cards = utils.contains(cards, this.certainHandCards);
+            cards = utils.contains(cards, this.possibleHandCards);
             var binary = utils.numToBinaryArray(cards);
+            console.log("binary",binary);
             binary.forEach(function (value, left) {
                 if (value != 0) {
                     value = 1 << left;
                     clause.addLiteral(value, true);
                 }
             });
-            /*_.chain(cards)
-             .filter(cards, function (card) {
-             return _.contains(this.certainHandCards, card);
-             }.bind(this))
-             .filter(function (card) {
-             return _.contains(this.possibleHandCards, card);
-             }.bind(this))
-             .forEach(function (card) {
-             clause.addLiteral(card, true);
-             });*/
+
             if (clause.literals.length == 1) { // New certain hand card
                 this.addCertainHandCard(clause.literals[0].value);
             } else if (!clause.isEmpty()) { // New clause
