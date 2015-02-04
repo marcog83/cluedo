@@ -60,7 +60,7 @@ define(function (require, exports, module) {
 		newGame: function () {
 			Cluedo.players = [];
 			Cluedo.cards = Cluedo.weapons | Cluedo.suspects | Cluedo.rooms;
-			var rooms = Cluedo.rooms ^ Cards.POOL;
+			  Cluedo.rooms &= ~ Cards.POOL;
 			Cluedo.board = new Board();
 		},
 		prepareCards: function () {
@@ -77,9 +77,9 @@ define(function (require, exports, module) {
 			NUM_DECK_CARDS = utils.NUM_CARDS - 3;
 			//
 			var deck = (Cluedo.weapons | Cluedo.suspects | Cluedo.rooms);
-			deck = deck ^ weapon;
-			deck = deck ^ suspect;
-			deck = deck ^ room;
+			 deck &= ~ weapon;
+			 deck &= ~ suspect;
+			 deck &= ~ room;
 			Cluedo.solution = solution;
 			window.sol = solution;
 			this.dealHands(deck);
@@ -91,7 +91,7 @@ define(function (require, exports, module) {
 				var left = ~~(Math.random() * utils.NUM_CARDS);
 				var card = 1 << left;
 				if ((deck & card) == card) {
-					deck = deck ^ card;
+					deck &= ~ card;
 					//
 					var who = index % numPlayers;
 					Cluedo.players[who].hand |= card;

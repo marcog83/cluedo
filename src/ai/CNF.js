@@ -106,9 +106,7 @@ define(function (require) {
 			var s = this.clauses.map(function (clause) {
 				return clause.toString();
 			}).toString().replace(/,/g, " ^ ");
-			/*this.clauses.forEach(function (clause) {
-			 s += " ^ " + clause;
-			 });*/
+
 			return !s ? "empty" : s;
 		}
 	};

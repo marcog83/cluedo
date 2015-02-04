@@ -11,9 +11,7 @@ define(function (require, exports, module) {
 
 
         checkAccusation: function (accusation) {
-            var correct = accusation.filter(function (card) {
-                    return _.contains(Cluedo.solution, card);
-                }).length == 3;
+            var correct = Cluedo.solution == accusation;
             console.log("Let me see!!! It's", correct);
             return correct;
         }

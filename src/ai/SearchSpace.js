@@ -22,15 +22,15 @@ define(function (require) {
 	SearchSpace.prototype = {
 		excludeCard: function (card, emit) {
 			if (this.weapons & card) {
-				this.weapons = this.weapons ^ card;
+				this.weapons = this.weapons &= ~card;
 				this.solWeapon = utils.getCard(this.weapons);
 			}
 			if (this.rooms & card) {
-				this.rooms = this.rooms ^ card;
+				this.rooms = this.rooms &= ~ card;
 				this.solRoom = utils.getCard(this.rooms);
 			}
 			if (this.suspects & card) {
-				this.suspects = this.suspects ^ card;
+				this.suspects = this.suspects &= ~ card;
 				this.solPerson = utils.getCard(this.suspects);
 			}
 			if (!emit) {

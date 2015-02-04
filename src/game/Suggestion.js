@@ -67,7 +67,7 @@ define(function (require, exports, module) {
                     player.observeMove(this, this.player, response.answerer, response.couldNotAnswer);
                 }.bind(this));
                 //
-                message = response.answerer.toString() + " can help you! => " + response.card.name;
+                message = response.answerer.toString() + " can help you! => " + response.card;
             }else{
                 console.log("hand =>"+this.player.hand);
             }

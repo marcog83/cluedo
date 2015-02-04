@@ -27,7 +27,7 @@ define(function (require) {
 			console.log(this.cPlayer.toString(), "=> I received cards", binary);
 			this.assumptions = [];
 			var otherPlayers = Cluedo.players.filter(function (player) {return player != this.cPlayer}.bind(this));
-			var numPlayer = otherPlayers.length;
+
 			//
 			otherPlayers.forEach(function (player) {
 				this.assumptions.push(new PlayerAssumption(player));
@@ -79,15 +79,15 @@ define(function (require) {
 		ask: function (questionair, suggestion) {
 			this.shownCards[questionair] = this.shownCards[questionair] || {};
 			var card = null;
-			if (utils.get(this.hand, suggestion.suspect)) {
+			if (this.hand & suggestion.suspect) {
 				this.shownCards[questionair][suggestion.suspect] = true;
 				card = suggestion.suspect;
 			}
-			if (utils.get(this.hand, suggestion.weapon)) {
+			if (this.hand & suggestion.weapon) {
 				this.shownCards[questionair][suggestion.weapon] = true;
 				card = suggestion.weapon;
 			}
-			if (utils.get(this.hand, suggestion.room)) {
+			if (this.hand & suggestion.room) {
 				this.shownCards[questionair][suggestion.room] = true;
 				card = suggestion.room;
 			}
@@ -172,7 +172,7 @@ define(function (require) {
 		},
 		setAccusation: function () {
 			var accusation = this.searchSpace.getAccusation();
-			console.log(this.cPlayer.toString(), "=> I accuse:", accusation.map(function (card) {return card.name;}));
+			console.log(this.cPlayer.toString(), "=> I accuse:",accusation);
 			return Promise.resolve(accusation);
 		}
 	};
