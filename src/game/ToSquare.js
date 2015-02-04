@@ -4,10 +4,10 @@ define(function (require, exports, module) {
 
     function ToSquare(player, point) {
 
-        if (player.character.location != null)
-            Cluedo.board.squareAt(player.character.location).setOccupant(null);
+       /* if (player.character.location != null)
+            Cluedo.board.squareAt(player.character.location).setOccupant(null);*/
         player.character.setLocation(point);
-        Cluedo.board.squareAt(point).setOccupant(player.character);
+       /* Cluedo.board.squareAt(point).setOccupant(player.character);*/
     }
 
     module.exports = ToSquare;

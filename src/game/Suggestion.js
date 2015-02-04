@@ -21,13 +21,13 @@ define(function (require, exports, module) {
             })[0];
         },
         callInSuspect: function () {
-            if (this.suspect.inRoom) {
+           /* if (this.suspect.inRoom) {
                 this.suspect.exitRoom(null);
             } else {
                 Cluedo.board.squareAt(this.suspect.location).setOccupant(null);
                 this.suspect.setLocation(null);
             }
-            this.suspect.enterRoom(this.room);
+            this.suspect.enterRoom(this.room);*/
         },
         questionPlayers: function () {
 
@@ -69,7 +69,7 @@ define(function (require, exports, module) {
                 //
                 message = response.answerer.toString() + " can help you! => " + response.card.name;
             }else{
-                console.log("hand =>"+this.player.hand.map(function(e){return e.name}));
+                console.log("hand =>"+this.player.hand);
             }
             console.log(message);
 

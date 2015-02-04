@@ -5,33 +5,33 @@ define(function (require) {
 	"use strict";
 	return {
 		// rooms
-		SPA: 0,
-		THEATRE: 1,
-		LIVING: 2,
-		OBSERVATORY: 4,
-		PATIO: 8,
-		POOL: 16,
-		HALL: 32,
-		KITCHEN: 64,
-		DINING: 128,
-		GUEST: 256,
+		POOL: 0,
+		THEATRE: 1 << 0,
+		LIVING: 1 << 1,
+		OBSERVATORY: 1 << 2,
+		PATIO: 1 << 3,
+		SPA: 1 << 4,
+		HALL: 1 << 5,
+		KITCHEN: 1 << 6,
+		DINING: 1 << 7,
+		GUEST: 1 << 8,
 		// suspects
-		PLUM:512,
-		SCARLETT:1024,
-		WHITE:2048,
-		GREEN:4096,
-		PEACOCK:8192,
-		MUSTARD:16384,
+		PLUM:1 << 9,
+		SCARLETT:1 << 10,
+		WHITE:1 << 11,
+		GREEN:1 << 12,
+		PEACOCK:1 << 13,
+		MUSTARD:1 << 14,
 		// weapons
-		ROPE:16384,
-		CANDLESTICK:32768,
-		KNIFE:65536,
-		PISTOL:131072,
-		BAT:262144,
-		DUMBBELL:524288,
-		TROPHY:1048576,
-		POISON:2097152,
-		AXE:4194304
+		ROPE:1 << 15,
+		CANDLESTICK:1 << 16,
+		KNIFE:1 << 17,
+		PISTOL:1 << 18,
+		BAT:1 << 19,
+		DUMBBELL:1 << 20,
+		TROPHY:1 << 21,
+		POISON:1 << 22,
+		AXE:1 << 23
 
 	};
 });

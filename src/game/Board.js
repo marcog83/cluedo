@@ -15,13 +15,13 @@ define(function (require, exports, module) {
 
     Board.prototype = {
         squareAt: function (point) {
-            var x = point.x;
+           /* var x = point.x;
             var y = point.y;
             if (x < 0 || x >= this.width || y < 0 || y >= this.height) return null;
-            else return this.house[y][x];
+            else return this.house[y][x];*/
         },
         readBoard: function () {
-
+/*
             var pos;
 
 
@@ -44,11 +44,11 @@ define(function (require, exports, module) {
                 }
 
             }.bind(this));
-
+*/
             //
         },
         nearbyRooms: function (point, roll) {
-            var rooms = [];
+           /* var rooms = [];
             var col = point.x;
             var row = point.y;
             //If the square at this position is an entrance to a room, add it to the Set.
@@ -70,10 +70,10 @@ define(function (require, exports, module) {
                 if (this.squareAt(right) != null && !this.squareAt(right).isRoom())
                     rooms = _.union(rooms,this.nearbyRooms(right, roll - 1));
             }
-            return rooms;
+            return rooms;*/
         },
         nearbySquares: function (point, from, roll) {
-            var squares = [];
+           /* var squares = [];
             var square = this.squareAt(point);
             square.setMoveFrom(from);
             var col = point.x;
@@ -94,7 +94,7 @@ define(function (require, exports, module) {
                 if (this.squareAt(right) != null && !this.squareAt(right).isRoom())
                     squares = _.union(squares,this.nearbySquares(right, point, roll - 1));
             }
-            return squares;
+            return squares;*/
         },
         print: function () {
             this.house.forEach(function (row) {

@@ -3,7 +3,7 @@ define(function (require, exports, module) {
     var Cluedo = require("./Cluedo");
 
     function ToRoom(player, room) {
-        Cluedo.board.squareAt(player.character.location).setOccupant(null);
+       // Cluedo.board.squareAt(player.character.location).setOccupant(null);
         player.character.enterRoom(room);
         player.character.setLocation(null);
     }

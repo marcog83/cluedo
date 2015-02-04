@@ -2,68 +2,59 @@
  * Created by marco.gobbi on 02/02/2015.
  */
 define(function (require) {
-    "use strict";
-    var Cluedo = require("../game/Cluedo");
-    var Room = require("../card/Room");
-    var utils = require("../utils/utils");
-    var Signal = require("signals");
+	"use strict";
+	var Cluedo = require("../game/Cluedo");
+	var Room = require("../card/Room");
+	var utils = require("../utils/utils");
+	var Signal = require("signals");
 
-    function SearchSpace() {
-        this.onChanged = new Signal();
-        this.suspects = Cluedo.suspects.slice(0);
-        this.weapons = Cluedo.weapons.slice(0);
-        this.rooms = Cluedo.rooms.slice(0);
-        _.remove(this.rooms, Room.POOL);
+	function SearchSpace() {
+		this.onChanged = new Signal();
+		this.suspects = Cluedo.suspects;
+		this.weapons = Cluedo.weapons;
+		this.rooms = Cluedo.rooms;
+		this.solPerson = utils.getCard(this.suspects);
+		this.solWeapon = utils.getCard(this.weapons);
+		this.solRoom = utils.getCard(this.rooms);
+		//
+	}
 
-        this.solPerson = this.suspects[0];
-
-        this.solWeapon = this.weapons[0];
-
-        this.solRoom = this.rooms[0];
-        //
-    }
-
-    SearchSpace.prototype = {
-        excludeCard: function (card,emit) {
-
-            if (card.type == 'Weapon') {
-                _.remove(this.weapons, card);
-                this.solWeapon = _.last(this.weapons);
-            }
-            if (card.type == 'Room') {
-                _.remove(this.rooms, card);
-                this.solRoom = _.last(this.rooms);
-            }
-            if (card.type == 'Suspect') {
-                _.remove(this.suspects, card);
-                this.solPerson = _.last(this.suspects);
-            }
-            if(!emit)
-            this.onChanged.emit(card);
-
-        },
-        update: function (card) {
-            this.excludeCard(card,true);
-        },
-        getPossibleCards: function () {
-            return this.suspects.concat(this.weapons, this.rooms);
-        },
-        getAccusation: function () {
-            return [
-                this.solPerson,
-                this.solWeapon,
-                this.solRoom
-            ];
-        },
-        getSolutionPerson: function () {
-            return this.solPerson;
-        },
-        getSolutionWeapon: function () {
-            return this.solWeapon;
-        },
-        getSolutionRoom: function () {
-            return this.solRoom;
-        }
-    };
-    return SearchSpace;
+	SearchSpace.prototype = {
+		excludeCard: function (card, emit) {
+			if ((this.weapons & card) == card) {
+				this.weapons = this.weapons ^ card;
+				this.solWeapon = utils.getCard(this.weapons);
+			}
+			if ((this.rooms & card) == card) {
+				this.rooms = this.rooms ^ card;
+				this.solRoom = utils.getCard(this.rooms);
+			}
+			if ((this.suspects & card) == card) {
+				this.suspects = this.suspects ^ card;
+				this.solPerson = utils.getCard(this.suspects);
+			}
+			if (!emit) {
+				this.onChanged.emit(card);
+			}
+		},
+		update: function (card) {
+			this.excludeCard(card, true);
+		},
+		getPossibleCards: function () {
+			return this.suspects | this.weapons | this.rooms;
+		},
+		getAccusation: function () {
+			return this.solPerson | this.solWeapon | this.solRoom;
+		},
+		getSolutionPerson: function () {
+			return this.solPerson;
+		},
+		getSolutionWeapon: function () {
+			return this.solWeapon;
+		},
+		getSolutionRoom: function () {
+			return this.solRoom;
+		}
+	};
+	return SearchSpace;
 });
