@@ -22,20 +22,21 @@ define(function (require) {
 
     PlayerAssumption.prototype = {
         removePossibleCard: function (card, emit) {
-            this.possibleHandCards = this.possibleHandCards.filter(function (pc) {
+            _.remove(this.possibleHandCards,card);
+            /* this.possibleHandCards = this.possibleHandCards.filter(function (pc) {
                 return pc != card;
             });
             if (this.certainHandCards.length + this.possibleHandCards.length == this.player.hand.length) {
                 this.certainHandCards = this.certainHandCards.concat(this.possibleHandCards);
                 //this.certainHandCards = _.union(this.certainHandCards, this.possibleHandCards);
                 this.possibleHandCards = [];
-				this.kb.clear();
+                this.kb.clear();
                 // Notify about more cards than necessary, but otherwise we have
                 // conflicts with the removal mechanism in addCertainHandCard()
                 this.certainHandCards.forEach(function (certainCard) {
                     this.notifyObservers(certainCard, emit);
                 }.bind(this));
-            }
+            }*/
             this.kb.addNewFact(card, false);
             var facts = this.kb.getNewFacts();
             var alreadyAddedFacts = [];
@@ -85,14 +86,13 @@ define(function (require) {
         addAnsweredSuggestion: function (suggestion) {
             var cards = [suggestion.suspect, suggestion.room, suggestion.weapon];
             var clause = new Clause();
-            console.log(" cards",cards);
-            console.log(" certa",this.certainHandCards);
+
             _.chain(cards)
                 .filter(cards, function (card) {
                     return _.contains(this.certainHandCards, card);
                 }.bind(this))
-                .filter(function (card,i,array) {
-                    console.log("~certa",array);
+                .filter(function (card, i, array) {
+
                     return _.contains(this.possibleHandCards, card);
                 }.bind(this))
                 .forEach(function (card) {
