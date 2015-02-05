@@ -1,7 +1,7 @@
 /**
  * Created by marco.gobbi on 04/02/2015.
  */
-define(function (require) {
+define(function () {
 	"use strict";
 	return {
 		// rooms

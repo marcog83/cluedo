@@ -9,7 +9,7 @@ define(function (require, exports, module) {
         return prefix.split('');
     }();
 
-    module.exports = window.utils={
+    module.exports = window.utils = {
         NUM_CARDS: 24,
         numToBinaryArray: function (num) {
             var bin = (num >>> 0).toString(2);
@@ -24,8 +24,15 @@ define(function (require, exports, module) {
             return source & ~partial;
         },
 
-        set: function (source, num) {
-            return source | 1 << num;
+        binaryForEach: function (binary, callback) {
+            binary = _.isNumber(binary) ? this.numToBinaryArray(binary) : binary;
+            binary.forEach(function (value, index) {
+                if (value === 1) {
+                    value = 1 << (binary.length - 1 - index);
+                    callback(value, index, binary);
+                }
+            });
+
         },
         remove: function (source, num) {
             return source & ~(1 << num);
@@ -34,7 +41,7 @@ define(function (require, exports, module) {
             var binary = this.numToBinaryArray(cards);
 
             var index = binary.indexOf(1);
-            var value = 1 << (binary.length-1 - index);
+            var value = 1 << (binary.length - 1 - index);
             if (!value)throw new Error("PERCHE'!!!!");
             return value;
         }

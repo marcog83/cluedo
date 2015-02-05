@@ -3,7 +3,7 @@ define(function (require, exports, module) {
     var Cluedo = require("./Cluedo");
 
     function Suggestion(player) {
-        this.room = player.character.room;
+        this.room = player.room;
         this.suspect = player;
         this.weapon = player;
         this.player = player;
@@ -49,7 +49,6 @@ define(function (require, exports, module) {
                 .filter(_memoizeAsk)
                 .map(function (player,i) {
                     var card = _memoizeAsk(player);
-
                     return {
                         couldNotAnswer: otherPlayers.filter(function (p) {
                             return p != player;
@@ -58,7 +57,6 @@ define(function (require, exports, module) {
                         card: card
                     }
                 }.bind(this))[0];
-
 
             if (response && response.card) {
                 this.player.hasAccusation=false;

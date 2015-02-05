@@ -3,16 +3,15 @@
  */
 define(function (require) {
     "use strict";
-    var Cluedo = require("../game/Cluedo");
-    var Room = require("../card/Room");
+    //var Cluedo = require("../game/Cluedo");
     var utils = require("../utils/utils");
     var Signal = require("signals");
 
-    function SearchSpace() {
+    function SearchSpace(suspects,weapons,rooms) {
         this.onChanged = new Signal();
-        this.suspects = Cluedo.suspects;
-        this.weapons = Cluedo.weapons;
-        this.rooms = Cluedo.rooms;
+        this.suspects = suspects;
+        this.weapons = weapons;
+        this.rooms = rooms;
         this.solPerson = utils.getCard(this.suspects);
         this.solWeapon = utils.getCard(this.weapons);
         this.solRoom = utils.getCard(this.rooms);

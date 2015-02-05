@@ -3,12 +3,12 @@
  */
 define(function (require) {
 	"use strict";
-	var TruthValues = require("./TruthValues");
+
 	var Literal = require("./Literal");
 
 	function CNF() {
 		this.clauses = [];
-		this.value = TruthValues.UNKNOWN;
+
 	}
 
 	CNF.prototype = {
