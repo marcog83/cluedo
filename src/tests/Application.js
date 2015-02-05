@@ -17,8 +17,10 @@ define(function (require) {
 				console.log("Your accusation =>",bw.numToBinaryArray(accusation));
 				console.log("       Solution =>",bw.numToBinaryArray(solution));
 			});
-			game.onFailed.connect(function (player,accusation) {
+			game.onFailed.connect(function (player,accusation,solution) {
 				alertify.alert("You Failed! " + player.toString());
+				console.log("Your accusation =>",bw.numToBinaryArray(accusation));
+				console.log("       Solution =>",bw.numToBinaryArray(solution));
 			});
 		}
 	};

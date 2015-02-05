@@ -20,7 +20,7 @@ define(function (require) {
 			if (bin.length < BYTES) {
 				bin = prefix.slice(0, BYTES - bin.length).join('') + bin;
 			}
-			bin = bin.substring(BYTES - bytes_length);
+			bin = bin.substring(8);
 			return bin.split('').map(Number);
 		}
 

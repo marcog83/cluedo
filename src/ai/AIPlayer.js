@@ -48,10 +48,12 @@ define(function (require) {
 					}.bind(this));
 					/**/
 				},
-				observeAssumption: function (card) {
+				observeAssumption: function (card,_, cAssumption) {
 					this.searchSpace.update(card);
 					this.assumptions.forEach(function (assumption) {
-						assumption.update(card);
+						if (assumption != cAssumption) {
+							assumption.update(card);
+						}
 					});
 				},
 				ask: function (questionair, suggestion) {
@@ -71,7 +73,6 @@ define(function (require) {
 					}
 					return card;
 				},
-
 				seeCard: function (suggestion, card, answerer, _couldNotAnswer) {
 					this.couldNotAnswer(suggestion, _couldNotAnswer);
 					var pa = this.getPlayerAssumption(answerer);

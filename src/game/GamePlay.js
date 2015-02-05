@@ -57,7 +57,7 @@ define(function (require, exports, module) {
 				Cluedo.finished = true;
 			} else {
 				this.currentPlayer.eliminate();
-				this.onFailed.emit(this.currentPlayer,accusation);
+				this.onFailed.emit(this.currentPlayer,accusation,Cluedo.solution);
 				this.checkRemainingPlayers();
 			}
 			return correct;
@@ -85,6 +85,8 @@ define(function (require, exports, module) {
 						this.leave();
 						if (_.isNumber(desiredRoom)) {
 							this.enter(desiredRoom);
+						}else{
+							throw desiredRoom;
 						}
 					}.bind(this));
 			} else {
@@ -116,10 +118,10 @@ define(function (require, exports, module) {
 			var inGamePlayers = Cluedo.players.filter(function (player) {
 				return player.inGame;
 			});
-			index = inGamePlayers.length < Cluedo.players.length ? index : index + 1;
-			if (index >= inGamePlayers.length) {
+			index =current%inGamePlayers.length;//inGamePlayers.length < Cluedo.players.length ? index : index + 1;
+			/*if (index >= inGamePlayers.length) {
 				index = 0;
-			}
+			}*/
 			this.takeTurn(inGamePlayers[index]);
 		}
 	};

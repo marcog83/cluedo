@@ -3,6 +3,7 @@ define(function (require, exports, module) {
 	var Cluedo = require("./Cluedo");
 	var Suggestion = {
 		questionPlayers: function (params) {
+			console.log("params",params);
 			var player = params.player;
 			var message = "No one could help you. Interesting..";
 			player.hasAccusation = true;
@@ -28,19 +29,41 @@ define(function (require, exports, module) {
 						card: card
 					}
 				})[0];
-			if (response && response.card) {
+			var card=response && response.card;
+			var answerer=response && response.answerer;
+			var couldNotAnswer=response && response.couldNotAnswer;
+			/*var nPlayers = Cluedo.players.length;
+			 var disproved = false;
+			 var answerer, couldNotAnswer = [];
+			 for (var i = 1; i < nPlayers; i++) {
+			 var askedPlayer = Cluedo.players[i];
+			 if (disproved) {
+			 continue;
+			 }
+			 var card = askedPlayer.ask(player, params);
+			 if (card != null) {
+			 answerer = askedPlayer;
+			 disproved = true;
+			 } else {
+			 couldNotAnswer.push(askedPlayer);
+			 }
+			 }*/
+			if (card) {
+
 				player.hasAccusation = false;
-				player.seeCard(params, response.card, response.answerer, response.couldNotAnswer);
+				player.seeCard(params, card, answerer, couldNotAnswer);
 				Cluedo.players.forEach(function (oplayer) {
-					oplayer.observeMove(params, player, response.answerer, response.couldNotAnswer);
+					oplayer.observeMove(params, player, answerer, couldNotAnswer);
 				}.bind(this));
 				//
-				message = response.answerer.toString() + " can help you! => " + response.card;
+				message = answerer.toString() + " can help you! => " + card;
 			} else {
-				console.log("wow!")
+				console.log("wow!");
+				console.log("hand", bw.numToBinaryArray(player.hand));
+				console.log("sugg", bw.numToBinaryArray(params.suspect | params.weapon | params.room));
 			}
 			console.log(message);
-			return response && response.card
+			return card
 		}
 	};
 	module.exports = Suggestion;

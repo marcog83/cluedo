@@ -3,12 +3,10 @@
  */
 define(function (require) {
 	"use strict";
-
 	var Literal = require("./Literal");
 
 	function CNF() {
 		this.clauses = [];
-
 	}
 
 	CNF.prototype = {
@@ -26,6 +24,7 @@ define(function (require) {
 				value = value.value;
 			}
 			if (!sign) {
+			//	console.log(this.clauses.length);
 				this.clauses.forEach(function (c) {
 					c.removeLiteral(value);
 					if (c.isEmpty()) {
@@ -44,12 +43,12 @@ define(function (require) {
 							break;
 						}
 						if (clauseOK) {
-							newList= _.union(newList,[clause]);
+							newList = _.union(newList, [clause]);
 							//newList.push(clause);
 						}
 					}
 				}
-				this.clauses = newList;
+				this.clauses = this.clauses.concat(newList);
 			}
 		},
 		/**
@@ -68,7 +67,6 @@ define(function (require) {
 		},
 		updateCNF: function () {
 			var facts = this.getNewFacts();
-
 			while (facts.length) {
 				facts.forEach(function (l) {
 					this.addNewFact(l);
@@ -100,13 +98,13 @@ define(function (require) {
 			this.clauses = clauses;
 		},
 		addClause: function (clause) {
-			this.clauses.push(clause);
+			this.clauses = _.union(this.clauses, [clause]);
+			//this.clauses.push(clause);
 		},
 		toString: function () {
 			var s = this.clauses.map(function (clause) {
 				return clause.toString();
 			}).toString().replace(/,/g, " ^ ");
-
 			return !s ? "empty" : s;
 		}
 	};
