@@ -51,7 +51,7 @@ define(function (require, exports, module) {
                 }.bind(this));
             }
             else {
-                var accusation = new Accusation(this.currentPlayer);
+
                 console.log(this.currentPlayer.toString(), "=> Follow Me here at the pool!");
                 this.currentPlayer.setAccusation()
                     .then(this.checkAccusation.bind(this))
