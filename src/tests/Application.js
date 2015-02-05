@@ -4,7 +4,7 @@
 define(function (require) {
 	"use strict";
 	var GameController = require("./GameController");
-	var Game = require("../gui/Game");
+	var Game = require("../game/GamePlay");
 	return {
 		main: function () {
 			var game = new Game();

@@ -3,7 +3,7 @@ define(function (require, exports, module) {
     var Cluedo = require("./Cluedo");
 
     function Suggestion(player) {
-        this.room = player.character.room;
+        this.room = player.room;
         this.suspect = player;
         this.weapon = player;
         this.player = player;
@@ -21,13 +21,13 @@ define(function (require, exports, module) {
             })[0];
         },
         callInSuspect: function () {
-            if (this.suspect.inRoom) {
+           /* if (this.suspect.inRoom) {
                 this.suspect.exitRoom(null);
             } else {
                 Cluedo.board.squareAt(this.suspect.location).setOccupant(null);
                 this.suspect.setLocation(null);
             }
-            this.suspect.enterRoom(this.room);
+            this.suspect.enterRoom(this.room);*/
         },
         questionPlayers: function () {
 
@@ -49,7 +49,6 @@ define(function (require, exports, module) {
                 .filter(_memoizeAsk)
                 .map(function (player,i) {
                     var card = _memoizeAsk(player);
-
                     return {
                         couldNotAnswer: otherPlayers.filter(function (p) {
                             return p != player;
@@ -59,7 +58,6 @@ define(function (require, exports, module) {
                     }
                 }.bind(this))[0];
 
-
             if (response && response.card) {
                 this.player.hasAccusation=false;
                 this.player.seeCard(this, response.card, response.answerer, response.couldNotAnswer);
@@ -67,9 +65,9 @@ define(function (require, exports, module) {
                     player.observeMove(this, this.player, response.answerer, response.couldNotAnswer);
                 }.bind(this));
                 //
-                message = response.answerer.toString() + " can help you! => " + response.card.name;
+                message = response.answerer.toString() + " can help you! => " + response.card;
             }else{
-                console.log("hand =>"+this.player.hand.map(function(e){return e.name}));
+                 console.log("wow!")
             }
             console.log(message);
 

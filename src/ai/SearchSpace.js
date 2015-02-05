@@ -3,57 +3,47 @@
  */
 define(function (require) {
     "use strict";
-    var Cluedo = require("../game/Cluedo");
-    var Room = require("../card/Room");
+    //var Cluedo = require("../game/Cluedo");
     var utils = require("../utils/utils");
     var Signal = require("signals");
 
-    function SearchSpace() {
+    function SearchSpace(suspects,weapons,rooms) {
         this.onChanged = new Signal();
-        this.suspects = Cluedo.suspects.slice(0);
-        this.weapons = Cluedo.weapons.slice(0);
-        this.rooms = Cluedo.rooms.slice(0);
-        _.remove(this.rooms, Room.POOL);
-
-        this.solPerson = this.suspects[0];
-
-        this.solWeapon = this.weapons[0];
-
-        this.solRoom = this.rooms[0];
+        this.suspects = suspects;
+        this.weapons = weapons;
+        this.rooms = rooms;
+        this.solPerson = utils.getCard(this.suspects);
+        this.solWeapon = utils.getCard(this.weapons);
+        this.solRoom = utils.getCard(this.rooms);
         //
     }
 
     SearchSpace.prototype = {
-        excludeCard: function (card,emit) {
-
-            if (card.type == 'Weapon') {
-                _.remove(this.weapons, card);
-                this.solWeapon = _.last(this.weapons);
+        excludeCard: function (card, emit) {
+            if (this.weapons & card) {
+                this.weapons &= ~card;
+                this.solWeapon = utils.getCard(this.weapons);
             }
-            if (card.type == 'Room') {
-                _.remove(this.rooms, card);
-                this.solRoom = _.last(this.rooms);
+            if (this.rooms & card) {
+                this.rooms &= ~card;
+                this.solRoom = utils.getCard(this.rooms);
             }
-            if (card.type == 'Suspect') {
-                _.remove(this.suspects, card);
-                this.solPerson = _.last(this.suspects);
+            if (this.suspects & card) {
+                this.suspects &= ~card;
+                this.solPerson = utils.getCard(this.suspects);
             }
-            if(!emit)
-            this.onChanged.emit(card);
-
+            if (!emit) {
+                this.onChanged.emit(card);
+            }
         },
         update: function (card) {
-            this.excludeCard(card,true);
+            this.excludeCard(card, true);
         },
         getPossibleCards: function () {
-            return this.suspects.concat(this.weapons, this.rooms);
+            return this.suspects | this.weapons | this.rooms;
         },
         getAccusation: function () {
-            return [
-                this.solPerson,
-                this.solWeapon,
-                this.solRoom
-            ];
+            return this.solPerson | this.solWeapon | this.solRoom;
         },
         getSolutionPerson: function () {
             return this.solPerson;

@@ -3,12 +3,12 @@
  */
 define(function (require) {
 	"use strict";
-	var TruthValues = require("./TruthValues");
+
 	var Literal = require("./Literal");
 
 	function CNF() {
 		this.clauses = [];
-		this.value = TruthValues.UNKNOWN;
+
 	}
 
 	CNF.prototype = {
@@ -106,9 +106,7 @@ define(function (require) {
 			var s = this.clauses.map(function (clause) {
 				return clause.toString();
 			}).toString().replace(/,/g, " ^ ");
-			/*this.clauses.forEach(function (clause) {
-			 s += " ^ " + clause;
-			 });*/
+
 			return !s ? "empty" : s;
 		}
 	};
