@@ -9,11 +9,12 @@ define(function (require) {
 
 	function GameController(game) {
 		var rooms = Cluedo.rooms;
-		$("#entra-stanza").click(function (e) {
+		$("#entra-stanza").focus().click(function (e) {
 			e.preventDefault();
 			var room = utils.getCard(rooms);
 			rooms &= ~room;
 			game.enter(room);
+			$("#entra-stanza").focus()
 		});
 	}
 

@@ -58,9 +58,11 @@ define(function (require, exports, module) {
 				//
 				message = answerer.toString() + " can help you! => " + card;
 			} else {
+				player.hasAccusation = true;
 				console.log("wow!");
 				console.log("hand", bw.numToBinaryArray(player.hand));
 				console.log("sugg", bw.numToBinaryArray(params.suspect | params.weapon | params.room));
+				console.log("solu", bw.numToBinaryArray(Cluedo.solution));
 			}
 			console.log(message);
 			return card

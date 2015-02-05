@@ -111,17 +111,24 @@ define(function (require, exports, module) {
 		},
 		nextPlayer: function () {
 			if (Cluedo.finished || current > MAX_TURN) {
+				if(current > MAX_TURN){
+					Cluedo.players.filter(function (player) {
+						return player.inGame;
+					}).forEach(function(p,i){
+						console.log(i,bw.numToBinaryArray(p.controller.searchSpace.getAccusation()));
+					});
+					console.log("s",bw.numToBinaryArray(Cluedo.solution));
+				}
+
 				return;
 			}
 			current++;
-			var index = Cluedo.players.indexOf(this.currentPlayer);
+
 			var inGamePlayers = Cluedo.players.filter(function (player) {
 				return player.inGame;
 			});
-			index =current%inGamePlayers.length;//inGamePlayers.length < Cluedo.players.length ? index : index + 1;
-			/*if (index >= inGamePlayers.length) {
-				index = 0;
-			}*/
+			var index =current%inGamePlayers.length;
+
 			this.takeTurn(inGamePlayers[index]);
 		}
 	};

@@ -48,8 +48,10 @@ define(function (require) {
 						}
 					}
 				}
-				this.clauses = this.clauses.concat(newList);
+				this.clauses = _.union(this.clauses,newList)
+
 			}
+
 		},
 		/**
 		 * Searches for facts (atomic clauses) in CNF.
