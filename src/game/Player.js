@@ -5,7 +5,7 @@ define(function (require, exports, module) {
     function Player(character, controller) {
         this.character = character;
         this.controller = controller;
-        this.controller.cPlayer = this;
+        this.controller.player = this;
         this.inGame = true;
         this.inRoom = null;
     }

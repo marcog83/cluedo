@@ -2,15 +2,20 @@
  * Created by marco.gobbi on 03/02/2015.
  */
 define(function (require) {
-    "use strict";
-    var Cards = require("../bitwise/Cards");
+	"use strict";
+	var Cards = require("../bitwise/Cards");
+	var utils = require("../utils/utils");
+	var Cluedo = require("../game/Cluedo");
 
-    function GameController(game) {
-        $("#entra-stanza").click(function (e) {
-            e.preventDefault();
-            game.enter(Cards.HALL);
-        });
-    }
+	function GameController(game) {
+		var rooms = Cluedo.rooms;
+		$("#entra-stanza").click(function (e) {
+			e.preventDefault();
+			var room = utils.getCard(rooms);
+			rooms &= ~room;
+			game.enter(room);
+		});
+	}
 
-    return GameController;
+	return GameController;
 });

@@ -3,7 +3,7 @@
  */
 define(function (require) {
     "use strict";
-    //var Cluedo = require("../game/Cluedo");
+    
     var utils = require("../utils/utils");
     var Signal = require("signals");
 
@@ -12,9 +12,9 @@ define(function (require) {
         this.suspects = suspects;
         this.weapons = weapons;
         this.rooms = rooms;
-        this.solPerson = utils.getCard(this.suspects);
-        this.solWeapon = utils.getCard(this.weapons);
-        this.solRoom = utils.getCard(this.rooms);
+        this.suspect = utils.getCard(this.suspects);
+        this.weapon = utils.getCard(this.weapons);
+        this.room = utils.getCard(this.rooms);
         //
     }
 
@@ -22,15 +22,15 @@ define(function (require) {
         excludeCard: function (card, emit) {
             if (this.weapons & card) {
                 this.weapons &= ~card;
-                this.solWeapon = utils.getCard(this.weapons);
+                this.weapon = utils.getCard(this.weapons);
             }
             if (this.rooms & card) {
                 this.rooms &= ~card;
-                this.solRoom = utils.getCard(this.rooms);
+                this.room = utils.getCard(this.rooms);
             }
             if (this.suspects & card) {
                 this.suspects &= ~card;
-                this.solPerson = utils.getCard(this.suspects);
+                this.suspect = utils.getCard(this.suspects);
             }
             if (!emit) {
                 this.onChanged.emit(card);
@@ -43,16 +43,7 @@ define(function (require) {
             return this.suspects | this.weapons | this.rooms;
         },
         getAccusation: function () {
-            return this.solPerson | this.solWeapon | this.solRoom;
-        },
-        getSolutionPerson: function () {
-            return this.solPerson;
-        },
-        getSolutionWeapon: function () {
-            return this.solWeapon;
-        },
-        getSolutionRoom: function () {
-            return this.solRoom;
+            return this.suspect | this.weapon | this.room;
         }
     };
     return SearchSpace;
