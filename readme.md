@@ -10,3 +10,8 @@ A javascript game of Cluedo.
 * Game logic code from (https://bitbucket.org/Eigenvictor/cluedo/)
 
 
+###Examples
+
+* A browser console simulation is under src/tests/index.html folder.
+* A test page for CNF is  src/ai/index.html folder.
+
