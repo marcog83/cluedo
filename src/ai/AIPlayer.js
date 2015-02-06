@@ -1,13 +1,7 @@
 /**
  * Created by marco.gobbi on 02/02/2015.
  */
-// Help Node out by setting up define.
-if (typeof exports === 'object' && typeof define !== 'function') {
-    var define = function (factory) {
-        factory(require, exports, module);
-    };
-}
-define(function (require, exports, module) {
+define(function (require) {
     "use strict";
     var SearchSpace = require("./SearchSpace");
 
@@ -17,9 +11,6 @@ define(function (require, exports, module) {
     var Cluedo = require("../game/Cluedo");
     var Cards = require("../bitwise/Cards");
     var bw = require("../bitwise/bw");
-
-    var Promise = require("bluebird");
-
     var AIPlayer = {
         create: function () {
             return {
@@ -62,7 +53,7 @@ define(function (require, exports, module) {
                     /**/
                 },
                 observeAssumption: function (card, _, cAssumption) {
-                    if (this.player.hasAccusation)return;
+                    if(this.player.hasAccusation)return;
                     this.searchSpace.update(card);
                     this.assumptions.forEach(function (assumption) {
                         if (assumption != cAssumption) {
@@ -116,7 +107,12 @@ define(function (require, exports, module) {
                         room: this.searchSpace.room,
                         player: player
                     };
-
+                    console.log(player.toString(), " go to", this.searchSpace.room, "!");
+                    console.log(player.toString(), "=>", [
+                        suggestion.suspect,
+                        suggestion.weapon,
+                        suggestion.room
+                    ]);
                     return Promise.resolve(suggestion);
                 },
                 getRanks: function () {
@@ -148,6 +144,7 @@ define(function (require, exports, module) {
                     //TODO come automatizzare scelta!!!
                     var desiredRoom = this.searchSpace.room;
                     if (player.hasAccusation) {
+                        console.log(player.toString(), "=> I Know who is the Murderer!");
                         desiredRoom = Cards.POOL;
                     }
                     if (player.room == desiredRoom) {
@@ -158,11 +155,12 @@ define(function (require, exports, module) {
                 },
                 setAccusation: function () {
                     var accusation = this.searchSpace.getAccusation();
+                    console.log(this.player.toString(), "=> I accuse:", accusation);
                     return Promise.resolve(accusation);
                 }
             };
         }
     };
 
-    module.exports = AIPlayer;
+    return AIPlayer;
 });

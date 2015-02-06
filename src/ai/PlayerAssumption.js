@@ -1,27 +1,20 @@
 /**
  * Created by marco.gobbi on 02/02/2015.
- */// Help Node out by setting up define.
-if (typeof exports === 'object' && typeof define !== 'function') {
-    var define = function (factory) {
-        factory(require, exports, module);
-    };
-}
-define(function (require, exports, module) {
+ */
+define(function (require) {
     "use strict";
     var CNF = require("./CNF");
     var Clause = require("./Clause");
     var Literal = require("./Literal");
-    var Signal = require("js-signal-slot");
+    var Signal = require("signals");
     var bw = require("../bitwise/bw");
-
-    var _ = require("lodash");
 
     function PlayerAssumption(player, cards) {
         this.player = player;
         this.onCertainAdded = new Signal();
         this.possibleHandCards = cards;
         this.certainHandCards = 0;
-        this.kb = new CNF();
+         this.kb = new CNF();
 
     }
 
@@ -108,5 +101,5 @@ define(function (require, exports, module) {
             }
         }
     };
-    module.exports = PlayerAssumption;
+    return PlayerAssumption;
 });

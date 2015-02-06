@@ -1,9 +1,3 @@
-// Help Node out by setting up define.
-if (typeof exports === 'object' && typeof define !== 'function') {
-    var define = function (factory) {
-        factory(require, exports, module);
-    };
-}
 define(function (require, exports, module) {
     'use strict';
     var Cluedo = require("./Cluedo");
@@ -13,7 +7,7 @@ define(function (require, exports, module) {
         this.controller = controller;
         this.controller.player = this;
         this.inGame = true;
-        this.inRoom = true;
+        this.inRoom = null;
     }
 
     Player.prototype = {
