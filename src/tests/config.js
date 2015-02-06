@@ -2,10 +2,12 @@
  * Created by marco.gobbi on 03/02/2015.
  */
 require.config({
-	paths: {
-		signals: "../../bower_components/js-signal-slot/Signal"
-	}
+    paths: {
+        'js-signal-slot': "../../bower_components/js-signal-slot/Signal",
+        'lodash': "../../bower_components/lodash/lodash",
+        'bluebird': "../../node_modules/bluebird/js/browser/bluebird.min"
+    }
 });
 require(["./Application"], function (Application) {
-	Application.main();
+    Application.main();
 });

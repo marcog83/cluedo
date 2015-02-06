@@ -1,3 +1,6 @@
 {
-  "name":"cluedo"
+  "name": "cluedo",
+  "dependencies": {
+    "lodash": "^3.1.0"
+  }
 }

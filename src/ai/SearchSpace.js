@@ -1,11 +1,20 @@
 /**
  * Created by marco.gobbi on 02/02/2015.
- */
-define(function (require) {
+ */// Help Node out by setting up define.
+if (typeof exports === 'object' && typeof define !== 'function') {
+    var define = function (factory) {
+        factory(require, exports, module);
+    };
+}
+define(function (require, exports, module) {
     "use strict";
     var utils = require("../utils/utils");
     var bw = require("../bitwise/bw");
-    var Signal = require("signals");
+    var Signal = require("js-signal-slot");
+
+    function power_of_2(number) {
+        return number != 0 && number & (number - 1) == 0
+    }
 
     function SearchSpace(suspects, weapons, rooms) {
         this.onChanged = new Signal();
@@ -32,9 +41,7 @@ define(function (require) {
                     this.weapon = card;
                 }
 
-                if (this.weapons == 0) {
-                    console.log(bw.numToBinaryArray(w));
-                    console.log(bw.numToBinaryArray(card));
+                if (this.weapons == 0 && !power_of_2(this.weapon)) {
                     throw new Error(card);
                 }
 
@@ -47,9 +54,7 @@ define(function (require) {
                 } else {
                     this.room = card;
                 }
-                if (this.rooms == 0) {
-                    console.log(bw.numToBinaryArray(r));
-                    console.log(bw.numToBinaryArray(card));
+                if (this.rooms == 0 && !power_of_2(this.room)) {
                     throw new Error(card);
                 }
 
@@ -62,13 +67,12 @@ define(function (require) {
                 } else {
                     this.suspect = card;
                 }
-                if (this.suspects == 0) {
-                    console.log(bw.numToBinaryArray(s));
-                    console.log(bw.numToBinaryArray(card));
+                if (this.suspects == 0 && !power_of_2(this.suspect)) {
                     throw new Error(card);
                 }
 
             }
+
             if (!emit) {
                 this.onChanged.emit(card);
             }
@@ -83,5 +87,5 @@ define(function (require) {
             return this.suspect | this.weapon | this.room;
         }
     };
-    return SearchSpace;
+    module.exports = SearchSpace;
 });
