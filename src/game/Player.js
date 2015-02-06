@@ -7,7 +7,7 @@ define(function (require, exports, module) {
         this.controller = controller;
         this.controller.player = this;
         this.inGame = true;
-        this.inRoom = null;
+        this.inRoom = true;
     }
 
     Player.prototype = {

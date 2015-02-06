@@ -72,7 +72,7 @@ define(function (require, exports, module) {
 			}
 		},
 		takeTurn: function (player) {
-			console.log(parseInt(current / Cluedo.players.length), "-------------------- " + player.toString() + " --------------------------------");
+			console.log(parseInt(current / Cluedo.players.length)+1, "-------------------- " + player.toString() + " --------------------------------");
 			this.currentPlayer = player;
 			if (player.inRoom) {
 				// confirm dialog
