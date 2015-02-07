@@ -19,6 +19,9 @@ define(function (require, exports, module) {
 		this.onLeave = new Signal();
 		this.onRoll = new Signal();
 		//
+		Cluedo.players=[];
+		Cluedo.finished=false;
+		//
 		Cluedo.players.push(new Player(Cards.PLUM, AIPlayer.create()));
 		Cluedo.players.push(new Player(Cards.SCARLETT, AIPlayer.create()));
 		Cluedo.players.push(new Player(Cards.WHITE, AIPlayer.create()));
@@ -72,7 +75,7 @@ define(function (require, exports, module) {
 			}
 		},
 		takeTurn: function (player) {
-			console.log(parseInt(current / Cluedo.players.length)+1, "-------------------- " + player.toString() + " --------------------------------");
+			console.log(parseInt(current / Cluedo.players.length), "-------------------- " + player.toString() + " --------------------------------");
 			this.currentPlayer = player;
 			if (player.inRoom) {
 				// confirm dialog

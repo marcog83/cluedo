@@ -9,6 +9,7 @@ define(function (require) {
     var PlayerAssumption = require("./PlayerAssumption");
     //
     var Cluedo = require("../game/Cluedo");
+    var Suggestion = require("../game/Suggestion");
     var Cards = require("../bitwise/Cards");
     var bw = require("../bitwise/bw");
     var AIPlayer = {
@@ -53,7 +54,7 @@ define(function (require) {
                     /**/
                 },
                 observeAssumption: function (card, _, cAssumption) {
-                    if(this.player.hasAccusation)return;
+                    if (this.player.hasAccusation)return;
                     this.searchSpace.update(card);
                     this.assumptions.forEach(function (assumption) {
                         if (assumption != cAssumption) {
@@ -107,7 +108,28 @@ define(function (require) {
                         room: this.searchSpace.room,
                         player: player
                     };
-                    console.log(player.toString(), " go to", this.searchSpace.room, "!");
+                    var ranks = this.getRanks();
+                    var bestRanks = {
+                        weapon: 10000,
+                        suspect: 10000,
+                        room: 10000
+                    };
+                    console.log("what about...", [
+                        suggestion.suspect,
+                        suggestion.weapon,
+                        suggestion.room
+                    ]);
+                    _.forIn(ranks, function (item, key) {
+
+                        if (item.rank < bestRanks[item.type]) {
+                            console.log("think... this", item.type, "is better ->", key);
+                            suggestion[item.type] = parseInt(key);
+                            this.searchSpace[item.type] = parseInt(key);
+                            bestRanks[item.type] = item.rank;
+                        }
+                    }.bind(this));
+
+
                     console.log(player.toString(), "=>", [
                         suggestion.suspect,
                         suggestion.weapon,
@@ -116,11 +138,66 @@ define(function (require) {
                     return Promise.resolve(suggestion);
                 },
                 getRanks: function () {
-                    var cards = this.searchSpace.getPossibleCards();
-                    var ranks = cards.reduce(function (result, card) {
-                        result[card] = 1;
-                        return result;
-                    }, {});
+                    function _map(num, type) {
+                        return bw.filter(num).reduce(function (result, item) {
+                            result[item.value] = {
+                                rank: 1,
+                                type: type
+                            };
+                            return result;
+                        }, {});
+                    }
+
+                    var weapons = _map(this.searchSpace.weapons, 'weapon');
+                    var suspects = _map(this.searchSpace.suspects, 'suspect');
+                    var rooms = _map(this.searchSpace.rooms, 'room');
+
+                    var ranks = _.assign(weapons, suspects);
+                    ranks = _.assign(ranks, rooms);
+                    // weapons.concat(suspects, rooms);
+
+                    var inc = this.assumptions.length + 1;
+
+                    this.assumptions.forEach(function (assumption) {
+
+                        var nClauses = assumption.kb.clauses.length;
+                        var literals = assumption.kb.getAllLiterals();
+
+                        /** for (var card in literals) {
+
+                         var entry = literals[card];
+                         //  if (!ranks[card])console.log(ranks, card, entry);
+                         ranks[card] && (ranks[card].rank += (inc * entry / nClauses));
+                         }*/
+
+                        _.forIn(literals, function (entry, card) {
+                            ranks[card] && (ranks[card].rank += (inc * entry / nClauses));
+                        });
+
+
+                        bw.binaryForEach(assumption.possibleHandCards, function (card, index) {
+                            ranks[card].rank += inc;
+                        });
+                        inc--;
+                    }.bind(this));
+
+                    //for (PlayerAssumption assumption : assumptions) {
+                    //    CNF<Card> cnf = assumption.getKb();
+                    //    int nClauses = cnf.getClauses().size();
+                    //    HashMap<Literal<Card>, Integer> literals = cnf.getAllLiterals();
+                    //    for (Map.Entry<Literal<Card>, Integer> entry
+                    //        : literals.entrySet()) {
+                    //        Card card = entry.getKey().getValue();
+                    //        ranks.put(card, ranks.get(card)
+                    //        + inc * entry.getValue() / nClauses);
+                    //    }
+                    //    for (Card card : assumption.getPossibleHandCards()) {
+                    //        ranks.put(card, ranks.get(card) + inc);
+                    //    }
+                    //    inc--;
+                    //}
+                    return ranks;
+
                 },
                 /**
                  * This method is called when a player show another player a card hidden from
