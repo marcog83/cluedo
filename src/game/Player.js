@@ -7,7 +7,7 @@ define(function (require, exports, module) {
         this.controller = controller;
         this.controller.player = this;
         this.inGame = true;
-        this.inRoom = true;
+        this.inRoom = false;
     }
 
     Player.prototype = {
@@ -17,7 +17,7 @@ define(function (require, exports, module) {
             this.room = room;
         },
         exitRoom: function (toExit) {
-            this.room.removeOccupant(this);
+            //this.room.removeOccupant(this);
             this.inRoom = false;
             this.location = toExit;
             this.room = null;

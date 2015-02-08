@@ -1,8 +1,9 @@
 /**
  * Created by marco.gobbi on 05/02/2015.
  */
-define(function (require) {
+define(function (require, exports, module) {
     "use strict";
+    var _ = require("lodash");
     var bw = function () {
         var BYTES = 32;
         var prefix = function () {
@@ -40,7 +41,7 @@ define(function (require) {
             return filter(binary).map(function (item) {
                 return item.value;
             })
-        };
+        }
 
         return {
             filter: _.memoize(_.compose(filter, numToBinaryArray)),
@@ -56,6 +57,6 @@ define(function (require) {
             values: _.memoize(_.compose(binaryValues, numToBinaryArray))
         }
     }();
-    return window.bw = bw;
+    module.exports = bw;
 })
 ;

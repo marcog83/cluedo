@@ -8,13 +8,13 @@ define(function (require) {
     var Literal = require("./Literal");
     var Signal = require("signals");
     var bw = require("../bitwise/bw");
-
+    var _ = require("lodash");
     function PlayerAssumption(player, cards) {
         this.player = player;
         this.onCertainAdded = new Signal();
         this.possibleHandCards = cards;
         this.certainHandCards = 0;
-         this.kb = new CNF();
+        this.kb = new CNF();
 
     }
 

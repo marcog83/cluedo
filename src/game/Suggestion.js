@@ -1,6 +1,8 @@
 define(function (require, exports, module) {
     'use strict';
     var Cluedo = require("./Cluedo");
+    var _ = require("lodash");
+    var bw = require("../bitwise/bw");
     var Suggestion = {
         questionPlayers: function (params) {
 

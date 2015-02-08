@@ -4,7 +4,7 @@
 define(function (require) {
     "use strict";
     var Literal = require("./Literal");
-
+    var _ = require("lodash");
     function CNF() {
         this.clauses = [];
     }

@@ -3,6 +3,7 @@
  */
 define(function (require) {
     "use strict";
+    var _ = require("lodash");
     var SearchSpace = require("./SearchSpace");
 
     var Clause = require("./Clause");
@@ -163,12 +164,6 @@ define(function (require) {
                         var nClauses = assumption.kb.clauses.length;
                         var literals = assumption.kb.getAllLiterals();
 
-                        /** for (var card in literals) {
-
-                         var entry = literals[card];
-                         //  if (!ranks[card])console.log(ranks, card, entry);
-                         ranks[card] && (ranks[card].rank += (inc * entry / nClauses));
-                         }*/
 
                         _.forIn(literals, function (entry, card) {
                             ranks[card] && (ranks[card].rank += (inc * entry / nClauses));
@@ -181,21 +176,7 @@ define(function (require) {
                         inc--;
                     }.bind(this));
 
-                    //for (PlayerAssumption assumption : assumptions) {
-                    //    CNF<Card> cnf = assumption.getKb();
-                    //    int nClauses = cnf.getClauses().size();
-                    //    HashMap<Literal<Card>, Integer> literals = cnf.getAllLiterals();
-                    //    for (Map.Entry<Literal<Card>, Integer> entry
-                    //        : literals.entrySet()) {
-                    //        Card card = entry.getKey().getValue();
-                    //        ranks.put(card, ranks.get(card)
-                    //        + inc * entry.getValue() / nClauses);
-                    //    }
-                    //    for (Card card : assumption.getPossibleHandCards()) {
-                    //        ranks.put(card, ranks.get(card) + inc);
-                    //    }
-                    //    inc--;
-                    //}
+
                     return ranks;
 
                 },

@@ -1,7 +1,7 @@
 define(function (require, exports, module) {
     'use strict';
     var bw = require("../bitwise/bw");
-
+    var _ = require("lodash");
     function getRandomInt(min, max) {
         return Math.floor(Math.random() * (max - min)) + min;
     }
