@@ -16,6 +16,7 @@ define(function (require) {
     var AIPlayer = {
         create: function () {
             return {
+
                 shownCards: {},
                 assumptions: {},
                 hand: 0,
@@ -110,10 +111,11 @@ define(function (require) {
                         player: player
                     };
                     var ranks = this.getRanks();
+                    var r=21;
                     var bestRanks = {
-                        weapon: 10000,
-                        suspect: 10000,
-                        room: 10000
+                        weapon: r,
+                        suspect: r,
+                        room: r
                     };
                     console.log("what about...", [
                         suggestion.suspect,
@@ -136,6 +138,7 @@ define(function (require) {
                         suggestion.weapon,
                         suggestion.room
                     ]);
+
                     return Promise.resolve(suggestion);
                 },
                 getRanks: function () {
