@@ -12,6 +12,7 @@ A javascript game of Cluedo.
 
 ###Examples
 
+* run bower install to get all dependencies
 * A browser console simulation is under src/tests/index.html folder.
 * A test page for CNF is  src/ai/index.html folder.
 
