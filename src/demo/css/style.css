@@ -166,27 +166,33 @@ body {
 }
 
 .icon.mustard {
-    background-color: sandybrown;
+    background-color: sandybrown;;
+    border-radius:5px;
 }
 
 .icon.green {
-    background-color: darkgreen;
+    background-color: darkgreen;;
+    border-radius:5px;
 }
 
 .icon.plum {
-    background-color: darkviolet;
+    background-color: darkviolet;;
+    border-radius:5px;
 }
 
 .icon.scarlett {
-    background-color: orangered;
+    background-color: orangered;;
+    border-radius:5px;
 }
 
 .icon.white {
-    background-color: whitesmoke;
+    background-color: whitesmoke;;
+    border-radius:5px;
 }
 
 .icon.peacock {
     background-color: coral;
+    border-radius:5px;
 }
 
 .suggestion-panel {

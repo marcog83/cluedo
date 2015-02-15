@@ -1,0 +1,16 @@
+<div>
+    <header>
+        <a href="javascript:void(0);" class="menu-button">
+            <tt></tt>
+
+        </a>
+    </header>
+    <ul class="side-bar-players">
+
+        <li ng-repeat="player in model.players">
+            <div class="thumbnail fl " ng-class="getCharacterName(player.character)"></div>
+            <p class="">{{player.name}}</p>
+
+        </li>
+    </ul>
+</div>
