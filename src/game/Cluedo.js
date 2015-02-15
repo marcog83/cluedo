@@ -6,7 +6,7 @@ define(function (require, exports, module) {
             NUM_DECK_CARDS = NUM_CARDS - 3,
             weapons = Cards.ROPE | Cards.CANDLESTICK | Cards.KNIFE | Cards.PISTOL | Cards.BAT | Cards.DUMBBELL | Cards.TROPHY | Cards.POISON | Cards.AXE,
             suspects = Cards.PLUM | Cards.SCARLETT | Cards.WHITE | Cards.GREEN | Cards.PEACOCK | Cards.MUSTARD,
-            rooms = Cards.SPA | Cards.THEATRE | Cards.LIVING | Cards.OBSERVATORY | Cards.PATIO | Cards.POOL | Cards.HALL | Cards.KITCHEN | Cards.DINING | Cards.GUEST,
+            rooms = Cards.BALL | Cards.BILIARD | Cards.DINING | Cards.CONSERVATORY | Cards.HALL | Cards.POOL | Cards.KITCHEN | Cards.LIBRARY | Cards.LOUNGE | Cards.STUDY,
             cards = weapons | suspects | rooms;
         return {
             players: [],
@@ -32,6 +32,7 @@ define(function (require, exports, module) {
                 deck &= ~suspect;
                 deck &= ~room;
                 Cluedo.solution = solution;
+
                 this.dealHands(deck);
             },
             dealHands: function (deck) {

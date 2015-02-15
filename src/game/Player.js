@@ -2,25 +2,32 @@ define(function (require, exports, module) {
     'use strict';
     var Cluedo = require("./Cluedo");
 
-    function Player(character, controller) {
-        this.character = character;
-        this.controller = controller;
+   // var MovementController = require("../movement/MovementController");
+
+    function Player(config) {
+        this.character = config.id;
+        this.config = config;
+        this.controller = config.controller;
         this.controller.player = this;
+        this.movement = config.movement;//MovementController.create(this.config);
         this.inGame = true;
-        this.inRoom = true;
     }
 
     Player.prototype = {
-        enterRoom: function (room) {
-            // room.addOccupant(this);
-            this.inRoom = true;
-            this.room = room;
+        gotoRoom: function (room) {
+            return this.movement.gotoRoom(room);
         },
-        exitRoom: function (toExit) {
-            //this.room.removeOccupant(this);
-            this.inRoom = false;
-            this.location = toExit;
-            this.room = null;
+        get location() {
+            return this.movement.location;
+        },
+        get room(){
+            return this.movement.room;
+        },
+        get inRoom() {
+            return this.movement.inRoom
+        },
+        get desiredRoom() {
+            return this.controller.desiredRoom
         },
         setHand: function (hand) {
             this.controller.setHand(hand);
@@ -55,6 +62,9 @@ define(function (require, exports, module) {
 
         setAccusation: function () {
             return this.controller.setAccusation();
+        },
+        getFormattedAccusation:function(){
+            return this.controller.getFormattedAccusation();
         }
     };
     module.exports = Player;

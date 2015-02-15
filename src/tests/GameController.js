@@ -13,7 +13,7 @@ define(function (require) {
             e.preventDefault();
             var room = utils.getCard(rooms);
             rooms &= ~room;
-            game.enter(room);
+            game.nextPlayer();
             $("#entra-stanza").focus()
         });
     }

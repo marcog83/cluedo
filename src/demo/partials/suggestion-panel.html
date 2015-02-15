@@ -1,0 +1,18 @@
+<div class="suggestion-panel"  ng-click="hide()">
+    <h3><span ng-show="model.lastTurn.winner">Congratulation </span>{{model.lastTurn.player}}</h3>
+    <ul>
+        <li>
+            {{model.lastTurn.suspect}}
+        </li>
+        <li>
+            {{model.lastTurn.weapon}}
+        </li>
+        <li>
+            {{model.lastTurn.room}}
+        </li>
+    </ul>
+    <div ng-if="model.lastTurn.card">
+        ti ha risposto {{model.lastTurn.answerer}}<br>
+        con {{model.lastTurn.card}}<br>
+    </div>
+</div>

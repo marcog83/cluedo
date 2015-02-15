@@ -1,17 +1,35 @@
 /**
  * Created by marco on 07/02/2015.
  */
-define(function () {
+define(function (require) {
+    var Board = require("../game/Board");
     var MovementController = {
-        create: function () {
+        create: function (config) {
             return {
-                location: null,
+                _location: config.location,
+                path: [],
                 room: null,
-                inRoom: null,
-                enterRoom: function (room) {
-                    // room.addOccupant(this);
+                inRoom: false,
+                gotoRoom: function (room) {
                     this.inRoom = true;
                     this.room = room;
+                    return new Promise(function (resolve, reject) {
+                        this.path = Board.findPath(this._location, room).map(function (position) {
+                            return {
+                                x: position[0],
+                                y: position[1]
+                            }
+                        });
+                        resolve(room);
+                    }.bind(this));
+
+                },
+                get location() {
+                    if (this.path.length) {
+                        this._location = this.path.shift();
+
+                    }
+                    return this._location
                 },
                 exitRoom: function (toExit) {
                     //this.room.removeOccupant(this);

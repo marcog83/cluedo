@@ -111,7 +111,7 @@ define(function (require) {
                         player: player
                     };
                     var ranks = this.getRanks();
-                    var r=21;
+                    var r = 21;
                     var bestRanks = {
                         weapon: r,
                         suspect: r,
@@ -203,21 +203,37 @@ define(function (require) {
                 },
                 stayOrLeave: function (player) {
                     //TODO come automatizzare scelta!!!
-                    var desiredRoom = this.searchSpace.room;
+                    var _desiredRoom = this.searchSpace.room;
                     if (player.hasAccusation) {
-                        console.log(player.toString(), "=> I Know who is the Murderer!");
-                        desiredRoom = Cards.POOL;
+                        console.log(player.toString(), "=> I Know who the Murderer is!");
+                        _desiredRoom = Cards.POOL;
                     }
-                    if (player.room == desiredRoom) {
+
+                    if (player.room == _desiredRoom) {
                         return Promise.resolve(true);
                     } else {
-                        return Promise.reject(desiredRoom);
+                        return Promise.reject(_desiredRoom);
                     }
+                },
+                get desiredRoom() {
+                    var _desiredRoom = this.searchSpace.room;
+                    if (this.player.hasAccusation) {
+                        console.log(this.player.toString(), "=> I Know who the Murderer is!");
+                        _desiredRoom = Cards.POOL;
+                    }
+                    return _desiredRoom;
                 },
                 setAccusation: function () {
                     var accusation = this.searchSpace.getAccusation();
                     console.log(this.player.toString(), "=> I accuse:", accusation);
                     return Promise.resolve(accusation);
+                },
+                getFormattedAccusation:function(){
+                    return {
+                        suspect:this.searchSpace.suspect,
+                        weapon:this.searchSpace.weapon,
+                        room:this.searchSpace.room
+                    }
                 }
             };
         }

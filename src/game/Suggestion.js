@@ -34,7 +34,12 @@ define(function (require, exports, module) {
             var card = response && response.card;
             var answerer = response && response.answerer;
             var couldNotAnswer = response && response.couldNotAnswer;
+            var result = {
+                suggestion: params,
+                card: card,
 
+                couldNotAnswer: couldNotAnswer
+            };
             if (card) {
 
                 player.hasAccusation = false;
@@ -43,6 +48,8 @@ define(function (require, exports, module) {
                     oplayer.observeMove(params, player, answerer, couldNotAnswer);
                 }.bind(this));
                 //
+                result.answerer = answerer;
+
                 message = answerer.toString() + " can help you! => " + card;
             } else {
                 player.hasAccusation = true;
@@ -52,7 +59,7 @@ define(function (require, exports, module) {
                 console.log("solu", bw.numToBinaryArray(Cluedo.solution));
             }
             console.log(message);
-            return card
+            return result;
         }
     };
     module.exports = Suggestion;

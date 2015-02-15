@@ -23,42 +23,40 @@ define(function (require, exports, module) {
         //
         Cluedo.players = [];
         Cluedo.finished = false;
-        //
-        Cluedo.players.push(new Player(Cards.PLUM, AIPlayer.create()));
-        Cluedo.players.push(new Player(Cards.SCARLETT, AIPlayer.create()));
-        Cluedo.players.push(new Player(Cards.WHITE, AIPlayer.create()));
-        Cluedo.players.push(new Player(Cards.GREEN, AIPlayer.create()));
-        Cluedo.players.push(new Player(Cards.PEACOCK, AIPlayer.create()));
-        Cluedo.players.push(new Player(Cards.MUSTARD, AIPlayer.create()));
-        //
-        MAX_TURN = 20 * Cluedo.players.length;
+
+
     }
 
     GamePlay.prototype = {
         start: function () {
+            MAX_TURN = 20 * Cluedo.players.length;
+            current = 0;
             Cluedo.prepareCards();
+
             this.takeTurn(Cluedo.players[0]);
         },
         enter: function (room) {
-            this.currentPlayer.enterRoom(room);
-            if (room != Cards.POOL) {
-                this.currentPlayer.suggest()
-                    .then(Suggestion.questionPlayers)
-                    .then(this.endTurn.bind(this));
-            }
-            else {
-                console.log(this.currentPlayer.toString(), "=> Follow Me here at the pool!");
-                this.currentPlayer.setAccusation()
-                    .then(this.checkAccusation.bind(this))
-                    .then(this.endTurn.bind(this));
-            }
-            this.onPlayerEntered.emit();
+          //  this.currentPlayer.gotoRoom(room).then(function (room) {
+                if (room != Cards.POOL) {
+                    this.currentPlayer.suggest()
+                        .then(Suggestion.questionPlayers)
+                        .then(this.endTurn.bind(this));
+                }
+                else {
+                    console.log(this.currentPlayer.toString(), "=> Follow Me here at the pool!");
+                    this.currentPlayer.setAccusation()
+                        .then(this.checkAccusation.bind(this))
+                        .then(this.endTurn.bind(this));
+                }
+                this.onPlayerEntered.emit();
+         //   }.bind(this));
+
         },
         checkAccusation: function (accusation) {
             var correct = Cluedo.solution == accusation;
             console.log("Let me see!!! It's", correct);
             if (correct) {
-                this.onWin.emit(this.currentPlayer, accusation, Cluedo.solution);
+                this.onWin.emit(this.currentPlayer, this.currentPlayer.getFormattedAccusation(), Cluedo.solution);
                 Cluedo.finished = true;
             } else {
                 this.currentPlayer.eliminate();
@@ -95,7 +93,8 @@ define(function (require, exports, module) {
                         }
                     }.bind(this));
             } else {
-                this._roll();
+                this.enter(player.desiredRoom);
+               // this._roll(player);
             }
         },
         leave: function () {
@@ -109,10 +108,12 @@ define(function (require, exports, module) {
             this.roll = Dice.roll();
             this.onRoll.emit(this.roll);
         },
-        endTurn: function () {
+        endTurn: function (result) {
             this.roll = 0;
-            this.onTurnCompleted.emit(this.currentPlayer);
-            this.nextPlayer();
+            if(typeof(result)!="boolean"){
+                this.onTurnCompleted.emit(result);
+            }
+
         },
         nextPlayer: function () {
             if (Cluedo.finished || current > MAX_TURN) {
