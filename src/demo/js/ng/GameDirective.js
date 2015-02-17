@@ -20,12 +20,15 @@ define(function (require, exports, module) {
 
         Game.prototype = {
             initialize: function () {
-                this.model.addNewPlayer(Cards.PLUM);
-                this.model.addNewPlayer(Cards.GREEN);
-                this.model.addNewPlayer(Cards.MUSTARD);
-                this.model.addNewPlayer(Cards.PEACOCK);
-                this.model.addNewPlayer(Cards.SCARLETT);
-                this.model.addNewPlayer(Cards.WHITE);
+	            if(!this.model.players.length){
+		            this.model.addNewPlayer(Cards.PLUM);
+		            this.model.addNewPlayer(Cards.GREEN);
+		            this.model.addNewPlayer(Cards.MUSTARD);
+		            this.model.addNewPlayer(Cards.PEACOCK);
+		            this.model.addNewPlayer(Cards.SCARLETT);
+		            this.model.addNewPlayer(Cards.WHITE);
+	            }
+
                 this.model.players.forEach(function (player) {
                     var controller = player.ai ? AIPlayer : HumanPlayer;
                     var config = CharacterMap[player.character];

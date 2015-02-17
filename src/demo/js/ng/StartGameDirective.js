@@ -1,5 +1,6 @@
 define(function (require, exports, module) {
     'use strict';
+	var CharacterMap = require("../CharacterMap");
     function StartGameDirective(model) {
         function StartGame($scope) {
 
@@ -7,6 +8,9 @@ define(function (require, exports, module) {
             $scope.model = model;
             this.model = model;
             $scope.addNewPlayer = this.addNewPlayer.bind(this);
+	        $scope.getName=function(player){
+		        return CharacterMap[player.character].label
+	        }
 
         }
 
