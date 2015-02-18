@@ -9,7 +9,7 @@
 
         <li ng-repeat="player in model.players">
             <div class="thumbnail fl " ng-class="getCharacterName(player.character)"></div>
-            <p class="">{{player.name}}</p>
+            <p class="">{{getCharacterName(player.character)}}</p>
 
         </li>
     </ul>

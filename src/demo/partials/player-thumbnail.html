@@ -1,0 +1,15 @@
+<div class="form-group">
+	<label>{{getName(player)}}</label>
+</div>
+<label> scegli
+	un personaggio
+	<select class="form-control"
+	        ng-model="player.character"
+	        ng-options="character.id as character.name for character in model.characters"></select>
+</label>
+
+<div class="checkbox">
+	<label>
+		<input type="checkbox" ng-model="player.ai"> AI
+	</label>
+</div>

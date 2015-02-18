@@ -8,9 +8,8 @@ define(function (require, exports, module) {
             $scope.model = model;
             this.model = model;
             $scope.addNewPlayer = this.addNewPlayer.bind(this);
-	        $scope.getName=function(player){
-		        return CharacterMap[player.character].label
-	        }
+
+
 
         }
 

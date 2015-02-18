@@ -8,6 +8,7 @@ define(function (require) {
     var GameModel = require("./ng/GameModel");
     var RouteProvider = require("./ng/RouteProvider");
     var GamePlayProvider = require("./ng/GamePlayProvider");
+    var PlayerThumbnailDirective = require("./ng/PlayerThumbnailDirective");
     require("angular-ui-router");
     require('angular-animate');
 
@@ -23,6 +24,7 @@ define(function (require) {
             app.directive("sideBarPanel", SidebarPanel);
             app.directive("toolbar", ToolbarDirective);
             app.directive("suggestionPanel", SuggestionPanelDirective);
+            app.directive("playerThumbnail", PlayerThumbnailDirective);
             angular.bootstrap(document, [NAME]);
         }
     }
