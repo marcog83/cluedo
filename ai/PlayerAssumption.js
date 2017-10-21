@@ -2,6 +2,7 @@ let CNF = require("./CNF");
 let Clause = require("./Clause");
 let bw = require("../bitwise/bw");
 let compact = require("../utils/compact");
+let {fromNumberToName} = require("../utils/utils");
 let EventEmitter = require('events').EventEmitter;
 class PlayerAssumption extends EventEmitter{
     constructor(player, cards) {
@@ -56,6 +57,7 @@ class PlayerAssumption extends EventEmitter{
     }
     notifyObservers (card, emit) {
         if (!emit) {
+            console.log("CertainAdded",fromNumberToName(card))
             this.emit("CertainAdded",card, false, this);
         }
     }

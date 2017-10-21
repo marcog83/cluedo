@@ -66,13 +66,13 @@ const Cluedo = {
     solution: 0,
     finished: false,
     prepareCards: () => {
-        let leftR = ~~(Math.random() * 9);
-        let leftS = ~~(Math.random() * 6) + 9;
-        let leftW = ~~(Math.random() * 9) + 15;
+        let leftRooms = ~~(Math.random() * 9);
+        let leftSuspects = ~~(Math.random() * 6) + 9;
+        let leftWeapons = ~~(Math.random() * 9) + 15;
         //
-        let weapon = 1 << leftW;
-        let suspect = 1 << leftS;
-        let room = 1 << leftR;
+        let weapon = 1 << leftWeapons;
+        let suspect = 1 << leftSuspects;
+        let room = 1 << leftRooms;
         //
         let solution = weapon | suspect | room;
         //
@@ -83,8 +83,7 @@ const Cluedo = {
         Cluedo.solution = solution;
 
         dealHands(deck);
-    },
-    dealHands
+    }
 
 };
 module.exports = Cluedo;

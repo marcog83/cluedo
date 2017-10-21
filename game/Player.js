@@ -1,14 +1,13 @@
 var Cluedo = require("./Cluedo");
 
 
-
 class Player {
-    constructor(config) {
-        this.character = config.id;
-        this.config = config;
-        this.controller = config.controller;
+    constructor({id, controller, movement}) {
+        this.character = id;
+
+        this.controller = controller;
         this.controller.player = this;
-        this.movement = config.movement;
+        this.movement = movement;
         this.inGame = true;
     }
 

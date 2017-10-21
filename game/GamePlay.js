@@ -32,7 +32,7 @@ class GamePlay extends EventEmitter {
     }
 
     enter(room) {
-        console.log("enter",fromNumberToName(room))
+        console.log("enter", fromNumberToName(room));
         if (room !== Cards.POOL) {
             this.currentPlayer.suggest()
                 .then(Suggestion.questionPlayers)
@@ -67,12 +67,10 @@ class GamePlay extends EventEmitter {
     }
 
     checkRemainingPlayers() {
-        let remaining = Cluedo.players.filter(function (player) {
-            return player.inGame
-        });
+        let remaining = Cluedo.players.filter(player => player.inGame);
         if (remaining.length === 1) {
             this.emit("Win", remaining[0]);
-           // this.onWin.emit(remaining[0]);
+            // this.onWin.emit(remaining[0]);
             Cluedo.finished = true;
         }
     }
@@ -81,13 +79,13 @@ class GamePlay extends EventEmitter {
         console.log(parseInt(current / Cluedo.players.length), "-------------------- " + player.toString() + " --------------------------------");
         this.currentPlayer = player;
         if (player.inRoom) {
-            console.log("in room")
+            console.log("in room");
             // confirm dialog
             player.stayOrLeave()
                 .then(player.suggest.bind(player))
                 .then(Suggestion.questionPlayers)
                 .then(this.endTurn.bind(this))
-                .catch( (desiredRoom) =>{
+                .catch(desiredRoom => {
                     this._roll();
                     this.leave();
                     if (isNumber(desiredRoom)) {
@@ -97,7 +95,7 @@ class GamePlay extends EventEmitter {
                     }
                 });
         } else {
-            console.log("not in room")
+            console.log("not in room");
             this.enter(player.desiredRoom);
             // this._roll(player);
         }
@@ -109,19 +107,19 @@ class GamePlay extends EventEmitter {
         // this.currentPlayer.character.exitRoom(room.exits[0]);
         this.roll--; //uses one step.
         this.emit("Leave", this.selection, this.roll);
-      //  this.onLeave.emit(this.selection, this.roll);
+        //  this.onLeave.emit(this.selection, this.roll);
     }
 
     _roll() {
         this.roll = Dice.roll();
         this.emit("Roll", this.roll);
-       // this.onRoll.emit(this.roll);
+        // this.onRoll.emit(this.roll);
     }
 
     endTurn(result) {
         this.roll = 0;
         if (typeof(result) !== "boolean") {
-           // this.onTurnCompleted.emit(result);
+            // this.onTurnCompleted.emit(result);
             this.emit("TurnCompleted", result);
         }
 
@@ -130,21 +128,18 @@ class GamePlay extends EventEmitter {
     nextPlayer() {
         if (Cluedo.finished || current > MAX_TURN) {
             if (current > MAX_TURN) {
-                Cluedo.players.filter(function (player) {
-                    return player.inGame;
-                }).forEach(function (p, i) {
-                    console.log(i, bw.numToBinaryArray(p.controller.searchSpace.getAccusation()));
-                });
-                console.log("s", bw.numToBinaryArray(Cluedo.solution));
+                Cluedo.players.filter(player => player.inGame)
+                    .forEach((p, i) => {
+                        console.log(i, bw.numToBinaryArray(p.controller.searchSpace.getAccusation()));
+                    });
+                console.log("solution:", bw.numToBinaryArray(Cluedo.solution));
             }
 
             return;
         }
         current++;
 
-        let inGamePlayers = Cluedo.players.filter(function (player) {
-            return player.inGame;
-        });
+        let inGamePlayers = Cluedo.players.filter(player => player.inGame);
         let index = current % inGamePlayers.length;
 
         this.takeTurn(inGamePlayers[index]);

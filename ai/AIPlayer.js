@@ -59,20 +59,20 @@ class AIPlayer {
         });
     }
 
-    ask(questionair, suggestion) {
+    ask(questionair, {suspect,weapon,room}) {
         this.shownCards[questionair] = this.shownCards[questionair] || {};
         let card = null;
-        if (this.hand & suggestion.suspect) {
-            this.shownCards[questionair][suggestion.suspect] = true;
-            card = suggestion.suspect;
+        if (this.hand & suspect) {
+            this.shownCards[questionair][suspect] = true;
+            card = suspect;
         }
-        if (this.hand & suggestion.weapon) {
-            this.shownCards[questionair][suggestion.weapon] = true;
-            card = suggestion.weapon;
+        if (this.hand & weapon) {
+            this.shownCards[questionair][weapon] = true;
+            card = weapon;
         }
-        if (this.hand & suggestion.room) {
-            this.shownCards[questionair][suggestion.room] = true;
-            card = suggestion.room;
+        if (this.hand & room) {
+            this.shownCards[questionair][room] = true;
+            card = room;
         }
         return card;
     }
@@ -83,14 +83,14 @@ class AIPlayer {
         pa.addCertainHandCard(card);
     }
 
-    couldNotAnswer(suggestion, couldNotAnswer) {
+    couldNotAnswer({suspect,weapon,room}, couldNotAnswer) {
         couldNotAnswer
             .filter(player => player !== this.player)
             .forEach(player => {
                 let pa = this.getPlayerAssumption(player);
-                pa.removePossibleCard(suggestion.suspect);
-                pa.removePossibleCard(suggestion.room);
-                pa.removePossibleCard(suggestion.weapon);
+                pa.removePossibleCard(suspect);
+                pa.removePossibleCard(room);
+                pa.removePossibleCard(weapon);
             });
     }
 
