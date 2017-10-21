@@ -1,8 +1,0 @@
-{
-  "name": "cluedo",
-  "dependencies": {
-    "lodash": "~3.1.0",
-    "js-signal-slot": "https://github.com/marcog83/js-signal-slot.git",
-    "alertify": "~0.3.10"
-  }
-}
