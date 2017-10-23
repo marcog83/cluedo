@@ -1,5 +1,5 @@
 let utils = require("../utils/utils");
-let bw = require("../bitwise/bw");
+//let bw = require("../bitwise/bw");
 let EventEmitter = require('events').EventEmitter;
 class SearchSpace extends EventEmitter{
     constructor(suspects, weapons, rooms) {
@@ -14,10 +14,10 @@ class SearchSpace extends EventEmitter{
         //
     }
 
-    excludeCard(card, emit) {
-        let r = this.rooms,
-            w = this.weapons,
-            s = this.suspects;
+    excludeCard(card) {
+        //let r = this.rooms,
+        //    w = this.weapons,
+        //    s = this.suspects;
         //
         if (this.weapons & card) {
             if (this.weapons & ~card) {
@@ -28,8 +28,8 @@ class SearchSpace extends EventEmitter{
             }
 
             if (this.weapons === 0) {
-                console.log(bw.numToBinaryArray(w));
-                console.log(bw.numToBinaryArray(card));
+              //  console.log(bw.numToBinaryArray(w));
+              //  console.log(bw.numToBinaryArray(card));
                 throw new Error(card);
             }
 
@@ -43,8 +43,8 @@ class SearchSpace extends EventEmitter{
                 this.room = card;
             }
             if (this.rooms === 0) {
-                console.log(bw.numToBinaryArray(r));
-                console.log(bw.numToBinaryArray(card));
+              //  console.log(bw.numToBinaryArray(r));
+              //  console.log(bw.numToBinaryArray(card));
                 throw new Error(card);
             }
 
@@ -58,19 +58,17 @@ class SearchSpace extends EventEmitter{
                 this.suspect = card;
             }
             if (this.suspects === 0) {
-                console.log(bw.numToBinaryArray(s));
-                console.log(bw.numToBinaryArray(card));
+             //   console.log(bw.numToBinaryArray(s));
+             //   console.log(bw.numToBinaryArray(card));
                 throw new Error(card);
             }
 
         }
-        if (!emit) {
-            this.emit("Changed",card);
-        }
+        this.emit("Changed",card);
     }
 
     update(card) {
-        this.excludeCard(card, true);
+        this.excludeCard(card);
     }
 
     getPossibleCards() {

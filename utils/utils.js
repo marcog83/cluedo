@@ -3,7 +3,7 @@ let Cards = require("../bitwise/Cards");
 let compose = require("./compose");
 
 function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min)) + min;
+    return ~~(Math.random() * (max - min + 1)) + min
 }
 
 var names = Object.entries(Cards).reduce((prev, [key, value]) => {

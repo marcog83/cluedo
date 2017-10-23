@@ -159,7 +159,7 @@ class AIPlayer {
 
         //
         let inc = this.assumptions.length + 1;
-        const length = this.assumptions.length
+        const length = this.assumptions.length;
 
         for (let i = 0; i < length; i++) {
             let assumption = this.assumptions[i];

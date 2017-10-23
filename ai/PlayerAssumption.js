@@ -69,20 +69,20 @@ class PlayerAssumption extends EventEmitter{
      * @param suggestion suggestion to add
 
      */
-    addAnsweredSuggestion (suggestion) {
+    addAnsweredSuggestion ({suspect,room,weapon}) {
         let clause = new Clause();
-        let cards = suggestion.suspect | suggestion.room | suggestion.weapon;
+        let cards = suspect | room | weapon;
 
         if (!(cards & this.certainHandCards)) {
             // let binary = utils.numToBinaryArray(cards);
-            if (this.possibleHandCards & suggestion.suspect) {
-                clause.addLiteral(suggestion.suspect, true);
+            if (this.possibleHandCards & suspect) {
+                clause.addLiteral(suspect, true);
             }
-            if (this.possibleHandCards & suggestion.room) {
-                clause.addLiteral(suggestion.room, true);
+            if (this.possibleHandCards & room) {
+                clause.addLiteral(room, true);
             }
-            if (this.possibleHandCards & suggestion.weapon) {
-                clause.addLiteral(suggestion.weapon, true);
+            if (this.possibleHandCards & weapon) {
+                clause.addLiteral(weapon, true);
             }
             if (clause.literals.length === 1) { // New certain hand card
                 this.addCertainHandCard(clause.literals[0].value);

@@ -16,7 +16,7 @@ let Suggestion = {
         //
         //remember ask
         //
-        let _memoizeAsk = memoize(function (oplayer) {
+        let _memoizeAsk = (function (oplayer) {
             return oplayer.ask(player, params);
         });
         let response = otherPlayers
@@ -46,7 +46,7 @@ let Suggestion = {
             player.seeCard(params, card, answerer, couldNotAnswer);
             Cluedo.players.forEach(function (oplayer) {
                 oplayer.observeMove(params, player, answerer, couldNotAnswer);
-            }.bind(this));
+            });
             //
             result.answerer = answerer;
 
