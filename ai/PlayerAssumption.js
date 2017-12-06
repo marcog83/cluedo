@@ -25,13 +25,21 @@ class PlayerAssumption extends EventEmitter{
         this.kb.addNewFact(card, false);
         let facts = this.kb.getNewFacts();
         let alreadyAddedFacts = [];
-        while (facts.length) {
-            let l = facts.shift();
+
+      /*  while (facts.length > 0) {
+            let l = facts.splice(0,1)[0];
+            this.addNewFact(l);
+            facts = facts.concat(this.getNewFacts());
+
+        }*/
+        while (facts.length> 0) {
+            let l = facts.splice(0,1)[0];
             if (l.sign && (alreadyAddedFacts.indexOf(l) === -1)) {
                 // we have found new certain hand card
                 this.addCertainHandCard(l.value);
                 alreadyAddedFacts.push(l);
-                facts =this.kb.getNewFacts();
+                facts = facts.concat(this.kb.getNewFacts());
+               // facts =this.kb.getNewFacts();
             }
         }
     }

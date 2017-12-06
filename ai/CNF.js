@@ -73,12 +73,10 @@ class CNF {
         let facts = this.getNewFacts();
 
         while (facts.length > 0) {
-            for (let i = 0; i < facts.length; i++) {
-                let l = facts[i];
-                this.addNewFact(l);
-                facts =this.getNewFacts()// facts.concat();
+            let l = facts.splice(0,1)[0];
+            this.addNewFact(l);
+            facts = facts.concat(this.getNewFacts());
 
-            }
         }
 
     }
