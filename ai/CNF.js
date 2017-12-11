@@ -44,7 +44,6 @@ class CNF {
     }
 
 
-
     removeClauseIfLiteralTrue(value) {
         let newList = [];
         // delete whole c from clauses if l = true in c
@@ -153,3 +152,4 @@ class CNF {
 }
 
 module.exports = CNF;
+
