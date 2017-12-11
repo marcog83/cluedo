@@ -16,19 +16,24 @@ class Clause {
      */
     removeLiteral(value) {
 
-        let lits = [];
+        let list = [];
         let found = false;
         for (let i = 0; i < this.literals.length; i++) {
             let l = this.literals[i];
             if (l.value !== value) {
-                lits.push(l);
+                list.push(l);
             } else {
                 found = true;
             }
         }
-        this.literals = lits;
+        this.literals = list;
         return found;
+        /**/
 
+    }
+
+    getLiterals(value) {
+        return this.literals.filter(l => l.value === value);
     }
 
     addLiteral(value, sign) {
@@ -45,7 +50,7 @@ class Clause {
     }
 
     isEmpty() {
-        return this.literals.length < 1;
+        return this.literals.length === 0;
     }
 
     toString() {

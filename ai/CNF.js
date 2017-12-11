@@ -19,35 +19,52 @@ class CNF {
             value = value.value;
         }
         if (!sign) {
-            for (let i = 0; i < this.clauses.length; i++) {
+            var length = this.clauses.length;
+            var clauses = this.clauses;
+            for (let i = 0; i < length; i++) {
                 let c = this.clauses[i];
-                c.removeLiteral(value);
-                if (c.isEmpty()) {
-                    throw new Error("ArithmeticException");
-                }
+                c.getLiterals(value).forEach(l => {
+                    if (l && !l.sign) {
+                        clauses = clauses.filter(_c => _c !== c);
+                    } else {
+                        c.removeLiteral(value);
+                        if (c.isEmpty()) {
+                            throw new Error("ArithmeticException");
+                        }
+                    }
+                });
+
             }
+            this.clauses = clauses;
 
         } else {
-            let newList = [];
-            // delete whole c from clauses if l = true in c
-            for (let i = 0; i < this.clauses.length; i++) {
-                let c = this.clauses[i];
-                let clauseOK = true;
-                let literals = c.literals;
-                for (let j = 0; j < literals.length; j++) {
-                    let l = literals[j];
-                    if (l.value === value) {
-                        clauseOK = false;
-                        break;
-                    }
-                }
-                if (clauseOK) {
-                    newList.push(c);
+            this.removeClauseIfLiteralTrue(value);
+
+        }
+    }
+
+
+
+    removeClauseIfLiteralTrue(value) {
+        let newList = [];
+        // delete whole c from clauses if l = true in c
+        for (let i = 0; i < this.clauses.length; i++) {
+            let c = this.clauses[i];
+            let clauseOK = true;
+            let literals = c.literals;
+            for (let j = 0; j < literals.length; j++) {
+                let l = literals[j];
+                if (l.sign && l.value === value) {
+                    clauseOK = false;
+                    break;
                 }
             }
-
-            this.clauses = newList;
+            if (clauseOK) {
+                newList.push(c);
+            }
         }
+
+        this.clauses = newList;
     }
 
     /**
@@ -73,12 +90,12 @@ class CNF {
         let facts = this.getNewFacts();
 
         while (facts.length > 0) {
-            let l = facts.splice(0,1)[0];
+            let l = facts.splice(0, 1)[0];
             this.addNewFact(l);
             facts = facts.concat(this.getNewFacts());
 
         }
-
+        return this.toString();
     }
 
     /**
@@ -120,10 +137,11 @@ class CNF {
      * @param clause    clause to add to the CNF
      */
     addClause(clause) {
-        const contains = this.clauses.filter(c => c.equals(clause))[0];
+        const contains = this.clauses.find(c => c.equals(clause));
         if (!contains) {
             this.clauses.push(clause);
         }
+        return this;
     }
 
     toString() {
