@@ -31,22 +31,7 @@ function DinnerGuests() {
         new Literal("Bob", true)
         , new Literal("Charlie", true)
     ]));
-    // cnf.addClause(new Clause([
-    //     new Literal("Alice", false)
-    //     ,new Literal("Bob", true)
-    //     ,new Literal("Charlie", false)
-    // ]));
-    // cnf.addClause(new Clause([
-    //     new Literal("Alice", true)
-    //     ,new Literal("Bob", true)
-    //     ,new Literal("Charlie", false)
-    // ]));
-    // cnf.addClause(new Clause([
-    //     new Literal("Alice", true)
-    //     ,new Literal("Bob", false)
-    //     ,new Literal("Charlie", true)
-    // ]));
-    // cnf.addNewFact("Charlie", true);
+
     console.log("CNF:", cnf.toString());
     cnf.addNewFact("Alice", false);
     cnf.updateCNF();
@@ -66,7 +51,7 @@ function DinnerGuests() {
  */
 
 function liarTruthTeller() {
-    const Amy = "Amy", Bob = "Bob", Cal = "Cal";
+    const Amy = "a", Bob = "b", Cal = "c";
     // Liar and truth-teller example test code:
     // var clauses = [{-1, -2}, {2, 1}, {-2, -3}, {3, 2}, {-3, -1}, {-3, -2}, {1, 2, 3}];
     let cnf = new CNF();
@@ -100,23 +85,23 @@ function liarTruthTeller() {
         , new Literal(Cal)
     ]));
     console.log("cnf:", cnf.toString());
-    const Cal_value = false;
+    const Amy_value = false;
+
     const Bob_value = true;
-    const Amy_value = true;
-    cnf.addNewFact(Cal, Cal_value);
-    console.log("add New Fact:", Cal, Cal_value);
-    // cnf.addNewFact(Bob, Bob_value);
-    //
-    // console.log("add New Fact:", Bob, Bob_value);
-    // cnf.addNewFact(Amy, Amy_value);
-    // console.log("add New Fact:", Amy, Amy_value);
-    console.log("cnf:", cnf.toString());
-    cnf.addNewFact(Bob, Bob_value);
-    console.log("add New Fact:", Bob, Bob_value);
-    console.log("cnf:", cnf.toString());
+    const Cal_value = false;
     cnf.addNewFact(Amy, Amy_value);
     console.log("add New Fact:", Amy, Amy_value);
     console.log("cnf:", cnf.toString());
+
+    cnf.addNewFact(Bob, Bob_value);
+    console.log("add New Fact:", Bob, Bob_value);
+    console.log("cnf:", cnf.toString());
+
+    cnf.addNewFact(Cal, Cal_value);
+    console.log("add New Fact:", Cal, Cal_value);
+    console.log("cnf:", cnf.toString());
+
+
     //a=false
     //b=true
     //c=false

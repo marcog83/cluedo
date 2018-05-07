@@ -59,7 +59,7 @@ class Clause {
         }
         let s = " (" + this.literals[0].toString();
         for (let i = 1; i < this.literals.length; i++) {
-            s += " v " + this.literals[i].toString();
+            s += " ∨ " + this.literals[i].toString();
         }
         s += ") ";
         return s;

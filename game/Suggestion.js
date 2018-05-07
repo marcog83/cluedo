@@ -6,7 +6,7 @@ let { fromNumberToName} = require("../utils/utils");
 let Suggestion = {
     questionPlayers: function (params) {
 
-        let player = params.player;
+        let {player} = params;
         let message = "No one could help you. Interesting..";
         player.hasAccusation = true;
         // players but the current
@@ -16,28 +16,27 @@ let Suggestion = {
         //
         //remember ask
         //
-        let _memoizeAsk = (function (oplayer) {
+        let _memoizeAsk = function (oplayer) {
             return oplayer.ask(player, params);
-        });
+        };
         let response = otherPlayers
             .filter(_memoizeAsk)
-            .map(function (oplayer) {
-                let card = _memoizeAsk(oplayer);
+            .map(function (answerer) {
+                let card = _memoizeAsk(answerer);
                 return {
                     couldNotAnswer: otherPlayers.filter(function (p) {
-                        return p !== oplayer;
+                        return p !== answerer;
                     }),
-                    answerer: oplayer,
-                    card: card
+                    answerer,
+                    card
                 }
-            })[0];
-        let card = response && response.card;
-        let answerer = response && response.answerer;
-        let couldNotAnswer = response && response.couldNotAnswer;
+            })[0] || {};
+        let {card,answerer,couldNotAnswer} = response ;//&& response.card;
+        //let answerer = response && response.answerer;
+       // let couldNotAnswer = response && response.couldNotAnswer;
         let result = {
             suggestion: params,
             card: card,
-
             couldNotAnswer: couldNotAnswer
         };
         if (card) {

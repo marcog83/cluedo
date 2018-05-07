@@ -1,36 +1,34 @@
-
-
-var CNF = function() {
-    this.formula = [] ;
+var CNF = function (formula = []) {
+    this.formula = formula;
     var scope = this;
-    this.addClause = function(clause){
+    this.addClause = function (clause) {
         scope.formula.push(clause);
         return scope;
     };
-    this.isEmpty = function(){
+    this.isEmpty = function () {
         return scope.formula.length == 0;
     };
-    this.containsEmpty = function(){
-        for(var x in scope.formula){
+    this.containsEmpty = function () {
+        for (var x in scope.formula) {
             if (scope.formula[x].isEmpty())
                 return true;
         }
         return false;
     };
-    this.containsUnitClause = function(){
-        for(var x in scope.formula){
+    this.containsUnitClause = function () {
+        for (var x in scope.formula) {
             if (scope.formula[x].isUnitClause())
                 return true;
         }
         return false;
     };
-    this.setLiteral = function(targetLiteral, value) {
+    this.setLiteral = function (targetLiteral, value) {
         value = targetLiteral.isNegate ? !value : value;
         var spliceList = [];
-        for(var f in scope.formula) {
-            for(var l in scope.formula[f].literals ) {
+        for (var f in scope.formula) {
+            for (var l in scope.formula[f].literals) {
                 var literal = scope.formula[f].literals[l];
-                if(literal.name === targetLiteral.name) {
+                if (literal.name === targetLiteral.name) {
                     var literalValue = literal.isNegate ? !value : value;
 //		            console.log('[clause]> ' + literalName + ' = ' + literalValue);
                     if (literalValue) {
@@ -42,13 +40,22 @@ var CNF = function() {
                 }
             }
         }
-        spliceList.sort(function(a, b) {
+        spliceList.sort(function (a, b) {
             return b - a;
         });
         for (var i in spliceList)
             scope.formula.splice(spliceList[i], 1);
         return scope;
     };
+    this.clone = function () {
+        return new CNF(scope.formula);
+    };
+    this.toString=function(){
+        let s = scope.formula.map(function (clause) {
+            return clause.toString();
+        }).toString().replace(/,/g, " ∧ ");
+        return !s ? "empty" : s;
+    }
 };
 
 module.exports = CNF;

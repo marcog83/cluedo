@@ -10,7 +10,7 @@ let {fromNumberToName} = require("../utils/utils");
 class AIPlayer {
     constructor() {
         this.shownCards = {};
-        this.assumptions = {};
+        this.assumptions = [];
         this.hand = 0;
         this.searchSpace = new SearchSpace(Cluedo.suspects, Cluedo.weapons, Cluedo.rooms);
         this.player = undefined;
@@ -120,7 +120,7 @@ class AIPlayer {
         Object.keys(ranks).forEach(key => {
             let item = ranks[key];
             if (item.rank < bestRanks[item.type]) {
-                console.log("think... this %s is better ->", item.type, fromNumberToName(key));
+                console.log("think... this %s is better ->", item.type, fromNumberToName(key),`(${item.rank},${bestRanks[item.type]})`);
                 suggestion[item.type] = parseInt(key);
                 this.searchSpace[item.type] = parseInt(key);
                 bestRanks[item.type] = item.rank;

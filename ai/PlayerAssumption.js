@@ -92,11 +92,12 @@ class PlayerAssumption extends EventEmitter{
             if (this.possibleHandCards & weapon) {
                 clause.addLiteral(weapon, true);
             }
-            if (clause.literals.length === 1) { // New certain hand card
-                this.addCertainHandCard(clause.literals[0].value);
-            } else if (!clause.isEmpty()) { // New clause
-                this.kb.addClause(clause);
-            }
+
+        }
+        if (clause.literals.length === 1) { // New certain hand card
+            this.addCertainHandCard(clause.literals[0].value);
+        } else if (!clause.isEmpty()) { // New clause
+            this.kb.addClause(clause);
         }
     }
 }

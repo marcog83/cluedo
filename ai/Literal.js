@@ -8,7 +8,7 @@ class Literal {
     toString() {
         let s = "";
         if (!this.sign) {
-            s += "!";
+            s += "¬";
         }
         return s + this.value.toString();
     }

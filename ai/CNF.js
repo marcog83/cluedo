@@ -146,7 +146,7 @@ class CNF {
     toString() {
         let s = this.clauses.map(function (clause) {
             return clause.toString();
-        }).toString().replace(/,/g, " ^ ");
+        }).toString().replace(/,/g, " ∧ ");
         return !s ? "empty" : s;
     }
 }

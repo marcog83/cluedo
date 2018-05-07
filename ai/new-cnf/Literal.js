@@ -1,6 +1,13 @@
-var Literal = function(name,isNegate=false) {
+var Literal = function(name,sign=true) {
     this.name = name;
-    this.isNegate = isNegate;
+    this.isNegate = !sign;
+    this.toString=()=>{
+        let s = "";
+        if (this.isNegate) {
+            s += "¬";
+        }
+        return s + this.name.toString();
+    }
 };
 
 module.exports = Literal;
